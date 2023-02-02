@@ -8,7 +8,7 @@ from modules import scripts, script_callbacks
 def download_model(_repo_id,_folder,_filename,_token):
     try:
         repo_exists = True
-        r_info = model_info(file_to, token=_token)
+        r_info = model_info(_repo_id, token=_token)
     except RepositoryNotFoundError:
         repo_exists = False
     finally:
