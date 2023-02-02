@@ -39,7 +39,7 @@ def on_ui_tabs():
                     text_repo_id = gr.Textbox(show_label=False,value="SmallTotem/reserved", max_lines=1, placeholder="repo_id")
                     text_folder = gr.Textbox(show_label=False,value="Uncategorized", max_lines=1, placeholder="folder")
                     text_filename = gr.Textbox(show_label=False, max_lines=1, placeholder="filename")
-                    text_token = gr.Textbox(show_label=False,value="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" max_lines=1, placeholder="🤗 token")
+                    text_token = gr.Textbox(show_label=False,value="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", max_lines=1, placeholder="🤗 token")
                     out_file = gr.Textbox(show_label=False)
                 with gr.Row().style(equal_height=True):
                     btn_download = gr.Button("download")
