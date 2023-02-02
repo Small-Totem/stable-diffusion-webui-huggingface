@@ -14,12 +14,12 @@ def download_model(_repo_id,_folder,_filename,_token):
     finally:
         if repo_exists:
             print(r_info)
-    if _folder == "":
+    if _folder is "":
         final_file_name=_filename
     else:    
         final_file_name=_folder+'/'+_filename
     hf_hub_download(repo_id=_repo_id,token=_token,resume_download=True,cache_dir="/content/stable-diffusion-webui/models/Stable-diffusion/",
-                filename=_folder+'/'+_filename,
+                filename=final_file_name,
                 force_filename=_filename,
                 )
     print(_folder+'/'+_filename+" done.")            
