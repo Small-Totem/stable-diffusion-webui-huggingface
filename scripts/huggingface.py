@@ -14,7 +14,7 @@ def download_model(_repo_id,_folder,_filename,_token):
     finally:
         if repo_exists:
             print(r_info)
-    if _folder is "":
+    if _folder == "":
         final_file_name=_filename
     else:    
         final_file_name=_folder+'/'+_filename
@@ -33,9 +33,9 @@ def on_ui_tabs():
         ### Example
         download_model(repo_id,folder,filename,token)  
         repo_id=SmallTotem/reserved  
-        folder=Hiraka  
-        filename=Hiraka_Lolipop.safetensors  
-        token=...
+        folder=Uncategorized (optional)  
+        filename=xxx.ckpt  
+        token=hf_xxx (optional)
         """)
         with gr.Group():
             with gr.Box():
