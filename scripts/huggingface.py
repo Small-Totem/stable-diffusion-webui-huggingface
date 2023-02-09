@@ -68,7 +68,7 @@ def on_ui_tabs():
                 with gr.Row().style(equal_height=True):
                     text_cmd = gr.Textbox(show_label=False, max_lines=1, placeholder="command")
                 with gr.Row().style(equal_height=True):
-                    btn_download = gr.Button("execute")
+                    btn_exec = gr.Button("execute")
                 with gr.Row().style(equal_height=True):
                     out_cmd = gr.Textbox(show_label=False)
                     
