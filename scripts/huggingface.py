@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import gradio as gr
-import commands
+import subprocess
 from huggingface_hub import model_info, hf_hub_download
 from huggingface_hub.utils import RepositoryNotFoundError, RevisionNotFoundError
 from modules import scripts, script_callbacks 
@@ -28,7 +28,15 @@ def download_model(_repo_id,_folder,_filename,_token,_cache_dir):
     return info_ret
 
 def exec_cmd(_command):
-    return commands.getoutput(_command)
+    process = subprocess.Popen(_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process.wait()
+
+    output = process.stdout.read()
+    error = process.stderr.read()
+    result = {"output": output, "error": error}
+    print("exec_cmd:"+result)
+    
+    return commands.getoutput(result)
 
 def on_ui_tabs():     
     with gr.Blocks() as huggingface:
