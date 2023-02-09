@@ -31,12 +31,13 @@ def exec_cmd(_command):
     process = subprocess.Popen(_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     process.wait()
 
-    output = process.stdout.read()
-    error = process.stderr.read()
+    output = process.stdout.read().decode(encoding="utf-8")
+    error = process.stderr.read().decode(encoding="utf-8")
     result = {"output": output, "error": error}
-    print("exec_cmd:"+result)
-    
-    return commands.getoutput(result)
+    print("exec_cmd:"+str(result))
+    if output == '':
+      return "error: "+str(error)
+    return str(output)
 
 def on_ui_tabs():     
     with gr.Blocks() as huggingface:
@@ -64,6 +65,11 @@ def on_ui_tabs():
                     btn_download = gr.Button("download")
                 with gr.Row().style(equal_height=True):
                     out_file = gr.Textbox(show_label=False)
+        gr.Markdown(
+        """
+        ### Command
+        """)
+        with gr.Group():
             with gr.Box():
                 with gr.Row().style(equal_height=True):
                     text_cmd = gr.Textbox(show_label=False, max_lines=1, placeholder="command")
@@ -72,7 +78,7 @@ def on_ui_tabs():
                 with gr.Row().style(equal_height=True):
                     out_cmd = gr.Textbox(show_label=False)
                     
-            btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
-            btn_exec.click(exec_cmd,inputs=[text_cmd],outputs=out_cmd)
+        btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
+        btn_exec.click(exec_cmd,inputs=[text_cmd],outputs=out_cmd)
     return (huggingface, "Hugging Face", "huggingface"),
 script_callbacks.on_ui_tabs(on_ui_tabs)
