@@ -36,7 +36,9 @@ def exec_cmd(_command):
     result = {"output": output, "error": error}
     print("exec_cmd:"+str(result))
     if output == '':
-      return "error: "+str(error)
+        if error  == '':
+            return "(no output)"
+        return "error: \n"+str(error)
     return str(output)
 
 def on_ui_tabs():     
