@@ -42,7 +42,7 @@ def exec_cmd(_command):
     return str(output)
 
 def push_file(_file, _path_in_repo, _repo_id, _token):
-    upload_file(path_or_fileobj=_file, path_in_repo=_path_in_repo, repo_id=_repo_id,, token=_token)
+    upload_file(path_or_fileobj=_file, path_in_repo=_path_in_repo, repo_id=_repo_id, token=_token)
     return "done."   
 
 def on_ui_tabs():     
