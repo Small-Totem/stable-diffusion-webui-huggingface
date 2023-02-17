@@ -2,7 +2,7 @@ import os
 import numpy as np
 import gradio as gr
 import subprocess
-from huggingface_hub import model_info, hf_hub_download
+from huggingface_hub import model_info, hf_hub_download, upload_file
 from huggingface_hub.utils import RepositoryNotFoundError, RevisionNotFoundError
 from modules import scripts, script_callbacks 
 
@@ -23,7 +23,7 @@ def download_model(_repo_id,_folder,_filename,_token,_cache_dir):
                 filename=final_file_name,
                 force_filename=_filename,
                 )
-    info_ret=_folder+'/'+_filename+" done. ->"+_cache_dir
+    info_ret=_folder+'/'+_filename+" done. -> "+_cache_dir
     print(info_ret)            
     return info_ret
 
@@ -41,6 +41,10 @@ def exec_cmd(_command):
         return "error: \n"+str(error)
     return str(output)
 
+def push_file(_file, _path_in_repo, _repo_id, _token):
+    upload_file(path_or_fileobj=_file, path_in_repo=_path_in_repo, repo_id=_repo_id,, token=_token)
+    return "done."   
+
 def on_ui_tabs():     
     with gr.Blocks() as huggingface:
         gr.Markdown(
@@ -52,7 +56,7 @@ def on_ui_tabs():
         filename=xxx.ckpt  
         token=hf_xxx *(optional)*  
         target_dir=/content/stable-diffusion-webui/models/Stable-diffusion/ *(colab)*  
-                  =/kaggle/working/stable-diffusion-webui/models/Stable-diffusion/ *(kaggle)*  
+        target_dir=/kaggle/working/stable-diffusion-webui/models/Stable-diffusion/ *(kaggle)*  
         """)
         with gr.Group():
             with gr.Box():
@@ -79,8 +83,23 @@ def on_ui_tabs():
                     btn_exec = gr.Button("execute")
                 with gr.Row().style(equal_height=True):
                     out_cmd = gr.Textbox(show_label=False)
-                    
+        gr.Markdown(
+        """
+        ### Push File to 🤗 Hugging Face
+        """)
+        with gr.Group():
+            with gr.Box():
+                with gr.Row().style(equal_height=True):
+                    text_file = gr.Textbox(show_label=False, max_lines=1, placeholder="file")
+                    text_repo_id = gr.Textbox(show_label=False, max_lines=1,value="SmallTotem/reserved", placeholder="repo_id")
+                    text_path_in_repo = gr.Textbox(show_label=False, max_lines=1, placeholder="path_in_repo")
+                    text_file_token = gr.Textbox(show_label=False, max_lines=1, placeholder="🤗 token")
+                    out_file_push = gr.Textbox(show_label=False)
+                with gr.Row().style(equal_height=True):
+                    btn_push_file = gr.Button("push")
+        
         btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
         btn_exec.click(exec_cmd,inputs=[text_cmd],outputs=out_cmd)
+        btn_push_file.click(push_file, inputs=[text_file, text_path_in_repo, text_repo_id, text_file_token], outputs=out_file_push)
     return (huggingface, "Hugging Face", "huggingface"),
 script_callbacks.on_ui_tabs(on_ui_tabs)
