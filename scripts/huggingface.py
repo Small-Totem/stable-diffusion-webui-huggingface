@@ -91,7 +91,7 @@ def on_ui_tabs():
             with gr.Box():
                 with gr.Row().style(equal_height=True):
                     text_file = gr.Textbox(show_label=False, max_lines=1, placeholder="file")
-                    text_repo_id = gr.Textbox(show_label=False, max_lines=1,value="SmallTotem/reserved", placeholder="repo_id")
+                    text_repo_id_2 = gr.Textbox(show_label=False, max_lines=1,value="SmallTotem/reserved", placeholder="repo_id")
                     text_path_in_repo = gr.Textbox(show_label=False, max_lines=1, placeholder="path_in_repo")
                     text_file_token = gr.Textbox(show_label=False,type="password", max_lines=1, placeholder="🤗 token")
                     out_file_push = gr.Textbox(show_label=False)
@@ -100,6 +100,6 @@ def on_ui_tabs():
         
         btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
         btn_exec.click(exec_cmd,inputs=[text_cmd],outputs=out_cmd)
-        btn_push_file.click(push_file, inputs=[text_file, text_path_in_repo, text_repo_id, text_file_token], outputs=out_file_push)
+        btn_push_file.click(push_file, inputs=[text_file, text_path_in_repo, text_repo_id_2, text_file_token], outputs=out_file_push)
     return (huggingface, "Hugging Face", "huggingface"),
 script_callbacks.on_ui_tabs(on_ui_tabs)
