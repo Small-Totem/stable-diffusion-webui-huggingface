@@ -64,7 +64,7 @@ def on_ui_tabs():
                     text_repo_id = gr.Textbox(show_label=False,value="SmallTotem/reserved", max_lines=1, placeholder="repo_id")
                     text_folder = gr.Textbox(show_label=False,value="Uncategorized", max_lines=1, placeholder="folder")
                     text_filename = gr.Textbox(show_label=False,value="", max_lines=1, placeholder="filename")
-                    text_token = gr.Textbox(show_label=False,value="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", max_lines=1, placeholder="🤗token")
+                    text_token = gr.Textbox(show_label=False,type="password", max_lines=1, placeholder="🤗token")
                 with gr.Row().style(equal_height=True):
                     text_target_dir = gr.Textbox(show_label=False,value="/content/stable-diffusion-webui/models/Stable-diffusion/", max_lines=1, placeholder="target_dir")
                 with gr.Row().style(equal_height=True):
@@ -93,7 +93,7 @@ def on_ui_tabs():
                     text_file = gr.Textbox(show_label=False, max_lines=1, placeholder="file")
                     text_repo_id = gr.Textbox(show_label=False, max_lines=1,value="SmallTotem/reserved", placeholder="repo_id")
                     text_path_in_repo = gr.Textbox(show_label=False, max_lines=1, placeholder="path_in_repo")
-                    text_file_token = gr.Textbox(show_label=False, max_lines=1, placeholder="🤗 token")
+                    text_file_token = gr.Textbox(show_label=False,type="password", max_lines=1, placeholder="🤗 token")
                     out_file_push = gr.Textbox(show_label=False)
                 with gr.Row().style(equal_height=True):
                     btn_push_file = gr.Button("push")
