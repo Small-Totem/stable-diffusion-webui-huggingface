@@ -49,13 +49,14 @@ def on_ui_tabs():
     with gr.Blocks() as huggingface:
         gr.Markdown(
         """
-        ### Example
+        ### Download
         download_model(repo_id,folder,filename,token)  
         repo_id=SmallTotem/reserved  
         folder=Uncategorized *(optional)*  
         filename=xxx.ckpt  
         token=hf_xxx *(optional)*  
         target_dir=/content/stable-diffusion-webui/models/Stable-diffusion/ *(colab)*  
+        target_dir=/content/stable-diffusion-webui/models/Lora/ *(colab,lora)* 
         target_dir=/kaggle/working/stable-diffusion-webui/models/Stable-diffusion/ *(kaggle)*  
         """)
         with gr.Group():
@@ -74,6 +75,8 @@ def on_ui_tabs():
         gr.Markdown(
         """
         ### Command
+        update_cache: cp -f /content/stable-diffusion-webui/cache.json /content/drive/MyDrive/novelai_script/NovelAI_WEBUI/cache.json
+        kaggle_ls: cd /content/drive/MyDrive/novelai && ls
         """)
         with gr.Group():
             with gr.Box():
@@ -85,7 +88,7 @@ def on_ui_tabs():
                     out_cmd = gr.Textbox(show_label=False)
         gr.Markdown(
         """
-        ### Push File to 🤗 Hugging Face
+        ### Push
         """)
         with gr.Group():
             with gr.Box():
@@ -93,13 +96,13 @@ def on_ui_tabs():
                     text_file = gr.Textbox(show_label=False, max_lines=1, placeholder="file")
                     text_repo_id_2 = gr.Textbox(show_label=False, max_lines=1,value="SmallTotem/reserved", placeholder="repo_id")
                     text_path_in_repo = gr.Textbox(show_label=False, max_lines=1, placeholder="path_in_repo")
-                    text_file_token = gr.Textbox(show_label=False,type="password", max_lines=1, placeholder="🤗 token")
+                    text_token_2 = gr.Textbox(show_label=False,type="password", max_lines=1, placeholder="🤗token")
                     out_file_push = gr.Textbox(show_label=False)
                 with gr.Row().style(equal_height=True):
                     btn_push_file = gr.Button("push")
         
         btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
         btn_exec.click(exec_cmd,inputs=[text_cmd],outputs=out_cmd)
-        btn_push_file.click(push_file, inputs=[text_file, text_path_in_repo, text_repo_id_2, text_file_token], outputs=out_file_push)
+        btn_push_file.click(push_file, inputs=[text_file, text_path_in_repo, text_repo_id_2, text_token_2], outputs=out_file_push)
     return (huggingface, "Hugging Face", "huggingface"),
 script_callbacks.on_ui_tabs(on_ui_tabs)
