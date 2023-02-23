@@ -56,8 +56,8 @@ def on_ui_tabs():
         filename=xxx.ckpt  
         token=hf_xxx *(optional)*  
         target_dir=/content/stable-diffusion-webui/models/Stable-diffusion/ *(colab)*  
-        target_dir=/content/stable-diffusion-webui/models/Lora/ *(colab,lora)* 
-        target_dir=/kaggle/working/stable-diffusion-webui/models/Stable-diffusion/ *(kaggle)*  
+        target_dir=/content/stable-diffusion-webui/models/Lora/ *(colab,lora)*   
+        target_dir=/kaggle/stable-diffusion-webui/models/Stable-diffusion/ *(kaggle)*  
         """)
         with gr.Group():
             with gr.Box():
@@ -75,8 +75,7 @@ def on_ui_tabs():
         gr.Markdown(
         """
         ### Command
-        update_cache: cp -f /content/stable-diffusion-webui/cache.json /content/drive/MyDrive/novelai_script/NovelAI_WEBUI/cache.json
-        kaggle_ls: cd /content/drive/MyDrive/novelai && ls
+        update_cache: cp -f /content/stable-diffusion-webui/cache.json /content/drive/MyDrive/novelai_script/NovelAI_WEBUI/cache.json  
         """)
         with gr.Group():
             with gr.Box():
