@@ -27,8 +27,12 @@ def download_model(_repo_id,_folder,_filename,_token,_cache_dir):
     print(info_ret)            
     return info_ret
 
-def exec_cmd(_command):
-    process = subprocess.Popen(_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+def exec_cmd(_dir,_command):
+    if _dir == "":
+        _command_final=_command
+    else 
+        _command_final="cd "+_dir+"&&"+_command
+    process = subprocess.Popen(_command_final, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     process.wait()
 
     output = process.stdout.read().decode(encoding="utf-8")
@@ -76,9 +80,12 @@ def on_ui_tabs():
         """
         ### Command
         update_cache: cp -f /content/stable-diffusion-webui/cache.json /content/drive/MyDrive/novelai_script/NovelAI_WEBUI/cache.json  
+        kaggle_ls: /kaggle/working  &&  ls  
         """)
         with gr.Group():
             with gr.Box():
+                with gr.Row().style(equal_height=True):
+                    text_cmd_dir = gr.Textbox(show_label=False,value="/content", max_lines=1, placeholder="context_dir")
                 with gr.Row().style(equal_height=True):
                     text_cmd = gr.Textbox(show_label=False, max_lines=1, placeholder="command")
                 with gr.Row().style(equal_height=True):
@@ -101,7 +108,7 @@ def on_ui_tabs():
                     btn_push_file = gr.Button("push")
         
         btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
-        btn_exec.click(exec_cmd,inputs=[text_cmd],outputs=out_cmd)
+        btn_exec.click(exec_cmd,inputs=[text_cmd_dir,text_cmd],outputs=out_cmd)
         btn_push_file.click(push_file, inputs=[text_file, text_path_in_repo, text_repo_id_2, text_token_2], outputs=out_file_push)
     return (huggingface, "Hugging Face", "huggingface"),
 script_callbacks.on_ui_tabs(on_ui_tabs)
