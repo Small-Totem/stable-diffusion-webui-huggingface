@@ -30,7 +30,7 @@ def download_model(_repo_id,_folder,_filename,_token,_cache_dir):
 def exec_cmd(_dir,_command):
     if _dir == "":
         _command_final=_command
-    else 
+    else: 
         _command_final="cd "+_dir+"&&"+_command
     process = subprocess.Popen(_command_final, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     process.wait()
