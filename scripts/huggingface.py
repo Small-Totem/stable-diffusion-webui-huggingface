@@ -81,6 +81,7 @@ def on_ui_tabs():
         ### Command
         update_cache: cp -f /content/stable-diffusion-webui/cache.json /content/drive/MyDrive/novelai_script/NovelAI_WEBUI/cache.json  
         kaggle_ls: /kaggle/working  &&  ls  
+        download_file: curl -Lo "`filename`"  `url`
         """)
         with gr.Group():
             with gr.Box():
