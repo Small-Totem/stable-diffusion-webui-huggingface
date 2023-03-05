@@ -49,6 +49,19 @@ def push_file(_file, _path_in_repo, _repo_id, _token):
     upload_file(path_or_fileobj=_file, path_in_repo=_path_in_repo, repo_id=_repo_id, token=_token)
     return "done."   
 
+dir_colab="/content/stable-diffusion-webui/models/Stable-diffusion/"
+def fn_btn_get_model_1():
+    return download_model("swl-models/mix-pro-v3","","mix-pro-v3.safetensors","",dir_colab)
+def fn_btn_get_model_2():
+    return download_model("AgraFL/RefSlave-V2","","RefSlave-V2.safetensors","",dir_colab)
+def fn_btn_get_model_3():
+    return download_model("gsdf/Counterfeit-V2.5","","Counterfeit-V2.5.safetensors","",dir_colab)
+def fn_btn_get_model_4():
+    return download_model("swl-models/9527","","9527.safetensors","",dir_colab)
+def fn_btn_get_model_5():
+    return download_model("swl-models/chilloutmix-ni","","chilloutmix-Ni.safetensors","",dir_colab)
+    
+
 def on_ui_tabs():     
     with gr.Blocks() as huggingface:
         gr.Markdown(
@@ -84,12 +97,13 @@ def on_ui_tabs():
                     btn_get_model_4 = gr.Button("9527")
                     btn_get_model_5 = gr.Button("chilloutmix-Ni")
         btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
-        dir_colab="/content/stable-diffusion-webui/models/Stable-diffusion/"
-        btn_get_model_1.click(download_model, inputs=["swl-models/mix-pro-v3","","mix-pro-v3.safetensors","",dir_colab], outputs=out_file)
-        btn_get_model_2.click(download_model, inputs=["AgraFL/RefSlave-V2","","RefSlave-V2.safetensors","",dir_colab], outputs=out_file)
-        btn_get_model_3.click(download_model, inputs=["gsdf/Counterfeit-V2.5","","Counterfeit-V2.5.safetensors","",dir_colab], outputs=out_file)
-        btn_get_model_4.click(download_model, inputs=["swl-models/9527","","9527.safetensors","",dir_colab], outputs=out_file)
-        btn_get_model_5.click(download_model, inputs=["swl-models/chilloutmix-ni","","chilloutmix-Ni.safetensors","",dir_colab], outputs=out_file)
+    
+        btn_get_model_1.click(fn_btn_get_model_1, inputs=[], outputs=out_file)
+        btn_get_model_2.click(fn_btn_get_model_2, inputs=[], outputs=out_file)
+        btn_get_model_3.click(fn_btn_get_model_3, inputs=[], outputs=out_file)
+        btn_get_model_4.click(fn_btn_get_model_4, inputs=[], outputs=out_file)
+        btn_get_model_5.click(fn_btn_get_model_5, inputs=[], outputs=out_file)
+
         gr.Markdown(
         """
         ### Command
