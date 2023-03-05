@@ -55,13 +55,14 @@ def on_ui_tabs():
         """
         ### Download
         download_model(repo_id,folder,filename,token)  
-        repo_id=SmallTotem/reserved  
-        folder=Uncategorized *(optional)*  
-        filename=xxx.ckpt  
-        token=hf_xxx *(optional)*  
-        target_dir=/content/stable-diffusion-webui/models/Stable-diffusion/ *(colab)*  
-        target_dir=/content/stable-diffusion-webui/models/Lora/ *(colab,lora)*   
-        target_dir=/kaggle/stable-diffusion-webui/models/Stable-diffusion/ *(kaggle)*  
+        repo_id= SmallTotem/reserved  
+        folder= Uncategorized *(optional)*  
+        filename= xxx.safetensors  
+        token= hf_xxx *(optional)*  
+        target_dir= /content/stable-diffusion-webui/models/Stable-diffusion/ *(colab)*  
+        target_dir= /content/stable-diffusion-webui/models/Lora/ *(colab,lora)*   
+        target_dir= /kaggle/stable-diffusion-webui/models/Stable-diffusion/ *(kaggle)*  
+        target_dir= /kaggle/stable-diffusion-webui/models/Lora/ *(kaggle,lora)*  
         """)
         with gr.Group():
             with gr.Box():
@@ -76,6 +77,19 @@ def on_ui_tabs():
                     btn_download = gr.Button("download")
                 with gr.Row().style(equal_height=True):
                     out_file = gr.Textbox(show_label=False)
+                with gr.Row().style(equal_height=True):
+                    btn_get_model_1 = gr.Button("mix-pro-v3")
+                    btn_get_model_2 = gr.Button("RefSlave-V2")
+                    btn_get_model_3 = gr.Button("Counterfeit-V2.5")
+                    btn_get_model_4 = gr.Button("9527")
+                    btn_get_model_5 = gr.Button("chilloutmix-Ni")
+        btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
+        dir_colab="/content/stable-diffusion-webui/models/Stable-diffusion/"
+        btn_get_model_1.click(download_model, inputs=["swl-models/mix-pro-v3","","mix-pro-v3.safetensors","",dir_colab], outputs=out_file)
+        btn_get_model_2.click(download_model, inputs=["AgraFL/RefSlave-V2","","RefSlave-V2.safetensors","",dir_colab], outputs=out_file)
+        btn_get_model_3.click(download_model, inputs=["gsdf/Counterfeit-V2.5","","Counterfeit-V2.5.safetensors","",dir_colab], outputs=out_file)
+        btn_get_model_4.click(download_model, inputs=["swl-models/9527","","9527.safetensors","",dir_colab], outputs=out_file)
+        btn_get_model_5.click(download_model, inputs=["swl-models/chilloutmix-ni","","chilloutmix-Ni.safetensors","",dir_colab], outputs=out_file)
         gr.Markdown(
         """
         ### Command
@@ -93,6 +107,7 @@ def on_ui_tabs():
                     btn_exec = gr.Button("execute")
                 with gr.Row().style(equal_height=True):
                     out_cmd = gr.Textbox(show_label=False)
+        btn_exec.click(exec_cmd,inputs=[text_cmd_dir,text_cmd],outputs=out_cmd)
         gr.Markdown(
         """
         ### Push
@@ -107,9 +122,6 @@ def on_ui_tabs():
                     out_file_push = gr.Textbox(show_label=False)
                 with gr.Row().style(equal_height=True):
                     btn_push_file = gr.Button("push")
-        
-        btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
-        btn_exec.click(exec_cmd,inputs=[text_cmd_dir,text_cmd],outputs=out_cmd)
         btn_push_file.click(push_file, inputs=[text_file, text_path_in_repo, text_repo_id_2, text_token_2], outputs=out_file_push)
     return (huggingface, "Hugging Face", "huggingface"),
 script_callbacks.on_ui_tabs(on_ui_tabs)
