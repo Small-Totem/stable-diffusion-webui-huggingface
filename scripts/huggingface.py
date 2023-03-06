@@ -60,18 +60,14 @@ def fn_btn_get_model_4():
     return download_model("swl-models/9527","","9527.safetensors","",dir_colab)
 def fn_btn_get_model_5():
     return download_model("swl-models/chilloutmix-ni","","chilloutmix-Ni.safetensors","",dir_colab)
-    
+def fn_btn_get_model_6():
+    return download_model("gsdf/Counterfeit-V2.5","","Counterfeit-V2.5.vae.pt","","/content/stable-diffusion-webui/models/VAE/")
 
 def on_ui_tabs():     
     with gr.Blocks() as huggingface:
         gr.Markdown(
         """
         ### Download
-        download_model(repo_id,folder,filename,token)  
-        repo_id= SmallTotem/reserved  
-        folder= Uncategorized *(optional)*  
-        filename= xxx.safetensors  
-        token= hf_xxx *(optional)*  
         target_dir= /content/stable-diffusion-webui/models/Stable-diffusion/  *(colab)*  
         target_dir= /content/stable-diffusion-webui/models/Lora/  *(colab,lora)*   
         """)
@@ -79,7 +75,7 @@ def on_ui_tabs():
             with gr.Box():
                 with gr.Row().style(equal_height=True):
                     text_repo_id = gr.Textbox(show_label=False,value="SmallTotem/reserved", max_lines=1, placeholder="repo_id")
-                    text_folder = gr.Textbox(show_label=False,value="Uncategorized", max_lines=1, placeholder="folder")
+                    text_folder = gr.Textbox(show_label=False,value="Lora-real", max_lines=1, placeholder="folder")
                     text_filename = gr.Textbox(show_label=False,value="", max_lines=1, placeholder="filename")
                     text_token = gr.Textbox(show_label=False,type="password", max_lines=1, placeholder="🤗token")
                 with gr.Row().style(equal_height=True):
@@ -94,6 +90,7 @@ def on_ui_tabs():
                     btn_get_model_3 = gr.Button("Counterfeit-V2.5")
                     btn_get_model_4 = gr.Button("9527")
                     btn_get_model_5 = gr.Button("chilloutmix-Ni")
+                    btn_get_model_6 = gr.Button("animevae")
         btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
     
         btn_get_model_1.click(fn_btn_get_model_1, inputs=[], outputs=out_file)
@@ -101,6 +98,7 @@ def on_ui_tabs():
         btn_get_model_3.click(fn_btn_get_model_3, inputs=[], outputs=out_file)
         btn_get_model_4.click(fn_btn_get_model_4, inputs=[], outputs=out_file)
         btn_get_model_5.click(fn_btn_get_model_5, inputs=[], outputs=out_file)
+        btn_get_model_6.click(fn_btn_get_model_6, inputs=[], outputs=out_file)
 
         gr.Markdown(
         """
