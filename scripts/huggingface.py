@@ -49,27 +49,37 @@ def push_file(_file, _path_in_repo, _repo_id, _token):
     upload_file(path_or_fileobj=_file, path_in_repo=_path_in_repo, repo_id=_repo_id, token=_token)
     return "done."   
 
-dir_colab="/content/stable-diffusion-webui/models/Stable-diffusion/"
+model_dir_colab="/content/stable-diffusion-webui/models/Stable-diffusion/"
 def fn_btn_get_model_1():
-    return download_model("swl-models/mix-pro-v3","","mix-pro-v3.safetensors","",dir_colab)
+    return download_model("swl-models/mix-pro-v3","","mix-pro-v3.safetensors","",model_dir_colab)
 def fn_btn_get_model_2():
-    return download_model("AgraFL/RefSlave-V2","","RefSlave-V2.safetensors","",dir_colab)
+    return download_model("AgraFL/RefSlave-V2","","RefSlave-V2.safetensors","",model_dir_colab)
 def fn_btn_get_model_3():
-    return download_model("gsdf/Counterfeit-V2.5","","Counterfeit-V2.5.safetensors","",dir_colab)
+    return download_model("gsdf/Counterfeit-V2.5","","Counterfeit-V2.5.safetensors","",model_dir_colab)
 def fn_btn_get_model_4():
-    return download_model("swl-models/9527","","9527.safetensors","",dir_colab)
+    return download_model("swl-models/9527","","9527.safetensors","",model_dir_colab)
 def fn_btn_get_model_5():
-    return download_model("swl-models/chilloutmix-ni","","chilloutmix-Ni.safetensors","",dir_colab)
+    return download_model("swl-models/chilloutmix-ni","","chilloutmix-Ni.safetensors","",model_dir_colab)
 def fn_btn_get_model_6():
     return download_model("gsdf/Counterfeit-V2.5","","Counterfeit-V2.5.vae.pt","","/content/stable-diffusion-webui/models/VAE/")
+
+def fn_btn_ls_model_dir():
+    return exec_cmd(model_dir_colab,"ls")
+def fn_btn_update_cache():
+    return exec_cmd("","cp -f /content/stable-diffusion-webui/cache.json /content/drive/MyDrive/novelai_script/NovelAI_WEBUI/cache.json")
+def fn_btn_cat_kaggle_log():
+    return exec_cmd("","cat /content/stable-diffusion-webui/out.log")
+def fn_btn_ls_kaggle_working():
+    return exec_cmd("/kaggle/working/","ls")
+
 
 def on_ui_tabs():     
     with gr.Blocks() as huggingface:
         gr.Markdown(
         """
         ### Download
-        target_dir= /content/stable-diffusion-webui/models/Stable-diffusion/  *(colab)*  
-        target_dir= /content/stable-diffusion-webui/models/Lora/  *(colab,lora)*   
+        target_dir= /content/stable-diffusion-webui/models/Stable-diffusion/  
+        target_dir= /content/stable-diffusion-webui/models/Lora/  *(lora)*   
         """)
         with gr.Group():
             with gr.Box():
@@ -79,7 +89,7 @@ def on_ui_tabs():
                     text_filename = gr.Textbox(show_label=False,value="", max_lines=1, placeholder="filename")
                     text_token = gr.Textbox(show_label=False,type="password", max_lines=1, placeholder="🤗token")
                 with gr.Row().style(equal_height=True):
-                    text_target_dir = gr.Textbox(show_label=False,value="/content/stable-diffusion-webui/models/Stable-diffusion/", max_lines=1, placeholder="target_dir")
+                    text_target_dir = gr.Textbox(show_label=False,value="/content/stable-diffusion-webui/models/Lora/", max_lines=1, placeholder="target_dir")
                 with gr.Row().style(equal_height=True):
                     btn_download = gr.Button("download")
                 with gr.Row().style(equal_height=True):
@@ -103,8 +113,6 @@ def on_ui_tabs():
         gr.Markdown(
         """
         ### Command
-        update_cache: cp -f /content/stable-diffusion-webui/cache.json /content/drive/MyDrive/novelai_script/NovelAI_WEBUI/cache.json  
-        kaggle_ls: /kaggle/working  &&  ls  
         download_file: curl -Lo "*filename*"  *url*
         """)
         with gr.Group():
@@ -117,7 +125,18 @@ def on_ui_tabs():
                     btn_exec = gr.Button("execute")
                 with gr.Row().style(equal_height=True):
                     out_cmd = gr.Textbox(show_label=False)
+                with gr.Row().style(equal_height=True):
+                    btn_ls_model_dir = gr.Button("ls_model_dir")
+                    btn_update_cache = gr.Button("update_cache")
+                    btn_cat_kaggle_log = gr.Button("cat_kaggle_log")
+                    btn_ls_kaggle_working = gr.Button("ls_kaggle_working")
         btn_exec.click(exec_cmd,inputs=[text_cmd_dir,text_cmd],outputs=out_cmd)
+
+        btn_ls_model_dir.click(fn_btn_ls_model_dir,inputs=[],outputs=out_cmd)
+        btn_update_cache.click(fn_btn_update_cache,inputs=[],outputs=out_cmd)
+        btn_cat_kaggle_log.click(fn_btn_cat_kaggle_log,inputs=[],outputs=out_cmd)
+        btn_ls_kaggle_working.click(fn_btn_ls_kaggle_working,inputs=[],outputs=out_cmd)
+
         gr.Markdown(
         """
         ### Push
