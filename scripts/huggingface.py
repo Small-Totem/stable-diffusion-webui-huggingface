@@ -49,6 +49,23 @@ def push_file(_file, _path_in_repo, _repo_id, _token):
     upload_file(path_or_fileobj=_file, path_in_repo=_path_in_repo, repo_id=_repo_id, token=_token)
     return "done."   
 
+def download_file(_file_path):
+    return _file_path
+
+def fn_btn_get_repo_info(_user,_repo_id,_token):
+    repo_id_name=_repo_id.replace("/","_")
+    repo_folder="/content/stable-diffusion-webui/repo_info/"+str(repo_id_name)
+    if _token == "" or _user == "":
+        git_command="GIT_LFS_SKIP_SMUDGE=1 git clone https://huggingface.co/"+str(_repo_id)
+    else:
+        git_command="GIT_LFS_SKIP_SMUDGE=1 git clone https://"+str(_user)+":"+str(_token)+"@huggingface.co/"+str(_repo_id)
+    if not os.path.exists(repo_folder):
+        os.makedirs(repo_folder)
+        exec_cmd(repo_folder,git_command)
+    else:
+        exec_cmd(repo_folder,"git pull")
+    return exec_cmd(repo_folder,"tree")
+
 model_dir_colab="/content/stable-diffusion-webui/models/Stable-diffusion/"
 def fn_btn_get_model_1():
     return download_model("swl-models/mix-pro-v3","","mix-pro-v3.safetensors","",model_dir_colab)
@@ -77,7 +94,7 @@ def on_ui_tabs():
     with gr.Blocks() as huggingface:
         gr.Markdown(
         """
-        ### Download
+        ### download model
         target_dir= /content/stable-diffusion-webui/models/Stable-diffusion/  
         target_dir= /content/stable-diffusion-webui/models/Lora/  *(lora)*   
         """)
@@ -112,7 +129,22 @@ def on_ui_tabs():
 
         gr.Markdown(
         """
-        ### Command
+        ### get repo info
+        """)
+        with gr.Group():
+            with gr.Box():
+                with gr.Row().style(equal_height=True):
+                    text_repo_info_user = gr.Textbox(show_label=False,value="SmallTotem", max_lines=1, placeholder="user")
+                    text_repo_info_repo_id = gr.Textbox(show_label=False,value="SmallTotem/reserved", max_lines=1, placeholder="repo_id")
+                    text_repo_info_token = gr.Textbox(show_label=False,type="password", max_lines=1, placeholder="🤗token")
+                    btn_get_repo_info = gr.Button("get_info")
+                with gr.Row().style(equal_height=True):
+                    out_repo_info = gr.Textbox(show_label=False)
+        btn_get_repo_info.click(fn_btn_get_repo_info, inputs=[text_repo_info_user,text_repo_info_repo_id,text_repo_info_token], outputs=out_repo_info)
+
+        gr.Markdown(
+        """
+        ### command
         download_file: curl -Lo "*filename*"  *url*
         """)
         with gr.Group():
@@ -139,7 +171,7 @@ def on_ui_tabs():
 
         gr.Markdown(
         """
-        ### Push
+        ### push model
         """)
         with gr.Group():
             with gr.Box():
@@ -152,5 +184,18 @@ def on_ui_tabs():
                 with gr.Row().style(equal_height=True):
                     btn_push_file = gr.Button("push")
         btn_push_file.click(push_file, inputs=[text_file, text_path_in_repo, text_repo_id_2, text_token_2], outputs=out_file_push)
+
+        gr.Markdown(
+        """
+        ### download file -> local
+        """)
+        with gr.Group():
+            with gr.Box():
+                with gr.Row().style(equal_height=True):
+                    text_download_file_path = gr.Textbox(show_label=False, max_lines=1, placeholder="download_file_path")
+                    btn_check_file = gr.Button("check")
+                with gr.Row().style(equal_height=True):
+                    file_download_file = gr.File()
+        btn_check_file.click(download_file, inputs=[text_download_file_path], outputs=file_download_file)
     return (huggingface, "Hugging Face", "huggingface"),
 script_callbacks.on_ui_tabs(on_ui_tabs)
