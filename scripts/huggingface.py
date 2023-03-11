@@ -79,6 +79,12 @@ def fn_btn_get_model_5():
     return download_model("swl-models/chilloutmix-ni","","chilloutmix-Ni.safetensors","",model_dir_colab)
 def fn_btn_get_model_6():
     return download_model("gsdf/Counterfeit-V2.5","","Counterfeit-V2.5.vae.pt","","/content/stable-diffusion-webui/models/VAE/")
+def fn_btn_get_model_7():
+    return download_model("swl-models/ChilloutNight","","ChilloutNight.safetensors","",model_dir_colab)
+def fn_btn_get_model_8():
+    return exec_cmd(model_dir_colab,"curl -Lo \"Cetus-Mix-V2.safetensors\" https://civitai.com/api/download/models/8298")
+def fn_btn_get_model_9():
+    return exec_cmd(model_dir_colab,"curl -Lo \"Cetus-Mix-V3.safetensors\" https://civitai.com/api/download/models/18496")
 
 def fn_btn_ls_model_dir():
     return exec_cmd(model_dir_colab,"ls")
@@ -118,6 +124,10 @@ def on_ui_tabs():
                     btn_get_model_4 = gr.Button("9527")
                     btn_get_model_5 = gr.Button("chilloutmix-Ni")
                     btn_get_model_6 = gr.Button("animevae")
+                with gr.Row().style(equal_height=True):
+                    btn_get_model_7 = gr.Button("ChilloutNight")
+                    btn_get_model_8 = gr.Button("CetusMixV2")
+                    btn_get_model_9 = gr.Button("CetusMixV3")
         btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
     
         btn_get_model_1.click(fn_btn_get_model_1, inputs=[], outputs=out_file)
@@ -126,6 +136,9 @@ def on_ui_tabs():
         btn_get_model_4.click(fn_btn_get_model_4, inputs=[], outputs=out_file)
         btn_get_model_5.click(fn_btn_get_model_5, inputs=[], outputs=out_file)
         btn_get_model_6.click(fn_btn_get_model_6, inputs=[], outputs=out_file)
+        btn_get_model_7.click(fn_btn_get_model_7, inputs=[], outputs=out_file)
+        btn_get_model_8.click(fn_btn_get_model_8, inputs=[], outputs=out_file)
+        btn_get_model_9.click(fn_btn_get_model_9, inputs=[], outputs=out_file)
 
         gr.Markdown(
         """
