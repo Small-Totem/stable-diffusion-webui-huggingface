@@ -66,6 +66,17 @@ def fn_btn_get_repo_info(_user,_repo_id,_token):
         exec_cmd(repo_folder,"git pull")
     return exec_cmd(repo_folder,"tree")
 
+def fn_radio_set_model_path(choice):
+    if choice == "model":
+        return gr.Textbox.update(visible=True,value="/content/stable-diffusion-webui/models/Stable-diffusion/")
+    elif choice == "lora":
+        return gr.Textbox.update(visible=True,value="/content/stable-diffusion-webui/models/Lora/")
+    elif choice == "hypernetworks":
+        return gr.Textbox.update(visible=True,value="/content/stable-diffusion-webui/models/hypernetworks/")
+    elif choice == "VAE":
+        return gr.Textbox.update(visible=True,value="/content/stable-diffusion-webui/models/VAE/")
+
+
 model_dir_colab="/content/stable-diffusion-webui/models/Stable-diffusion/"
 def fn_btn_get_model_1():
     return download_model("swl-models/mix-pro-v3","","mix-pro-v3.safetensors","",model_dir_colab)
@@ -101,8 +112,6 @@ def on_ui_tabs():
         gr.Markdown(
         """
         ### download model
-        target_dir= /content/stable-diffusion-webui/models/Stable-diffusion/  
-        target_dir= /content/stable-diffusion-webui/models/Lora/  *(lora)*   
         """)
         with gr.Group():
             with gr.Box():
@@ -111,6 +120,8 @@ def on_ui_tabs():
                     text_folder = gr.Textbox(show_label=False,value="Lora-real", max_lines=1, placeholder="folder")
                     text_filename = gr.Textbox(show_label=False,value="", max_lines=1, placeholder="filename")
                     text_token = gr.Textbox(show_label=False,type="password", max_lines=1, placeholder="🤗token")
+                with gr.Row().style(equal_height=True):
+                    radio = gr.Radio(["model", "lora", "hypernetworks","VAE"], label="model_type")
                 with gr.Row().style(equal_height=True):
                     text_target_dir = gr.Textbox(show_label=False,value="/content/stable-diffusion-webui/models/Lora/", max_lines=1, placeholder="target_dir")
                 with gr.Row().style(equal_height=True):
@@ -129,6 +140,8 @@ def on_ui_tabs():
                     btn_get_model_8 = gr.Button("CetusMixV2")
                     btn_get_model_9 = gr.Button("CetusMixV3")
         btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
+
+        radio.change(fn=fn_radio_set_model_path, inputs=radio, outputs=text_target_dir)
     
         btn_get_model_1.click(fn_btn_get_model_1, inputs=[], outputs=out_file)
         btn_get_model_2.click(fn_btn_get_model_2, inputs=[], outputs=out_file)
