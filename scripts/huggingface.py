@@ -66,18 +66,21 @@ def fn_btn_get_repo_info(_user,_repo_id,_token):
         exec_cmd(repo_folder,"git pull")
     return exec_cmd(repo_folder,"tree")
 
+model_dir_colab="/content/stable-diffusion-webui/models/Stable-diffusion/"
+lora_dir_colab="/content/stable-diffusion-webui/models/Lora/"
+hypernetworks_dir_colab="/content/stable-diffusion-webui/models/hypernetworks/"
+VAE_dir_colab="/content/stable-diffusion-webui/models/VAE/"
+
 def fn_radio_set_model_path(choice):
     if choice == "model":
-        return gr.Textbox.update(visible=True,value="/content/stable-diffusion-webui/models/Stable-diffusion/")
+        return gr.Textbox.update(visible=True,value=model_dir_colab)
     elif choice == "lora":
-        return gr.Textbox.update(visible=True,value="/content/stable-diffusion-webui/models/Lora/")
+        return gr.Textbox.update(visible=True,value=lora_dir_colab)
     elif choice == "hypernetworks":
-        return gr.Textbox.update(visible=True,value="/content/stable-diffusion-webui/models/hypernetworks/")
+        return gr.Textbox.update(visible=True,value=hypernetworks_dir_colab)
     elif choice == "VAE":
-        return gr.Textbox.update(visible=True,value="/content/stable-diffusion-webui/models/VAE/")
+        return gr.Textbox.update(visible=True,value=VAE_dir_colab)
 
-
-model_dir_colab="/content/stable-diffusion-webui/models/Stable-diffusion/"
 def fn_btn_get_model_1():
     return download_model("swl-models/mix-pro-v3","","mix-pro-v3.safetensors","",model_dir_colab)
 def fn_btn_get_model_2():
@@ -89,13 +92,25 @@ def fn_btn_get_model_4():
 def fn_btn_get_model_5():
     return download_model("swl-models/chilloutmix-ni","","chilloutmix-Ni.safetensors","",model_dir_colab)
 def fn_btn_get_model_6():
-    return download_model("gsdf/Counterfeit-V2.5","","Counterfeit-V2.5.vae.pt","","/content/stable-diffusion-webui/models/VAE/")
+    return download_model("gsdf/Counterfeit-V2.5","","Counterfeit-V2.5.vae.pt","",VAE_dir_colab)
 def fn_btn_get_model_7():
     return download_model("swl-models/ChilloutNight","","ChilloutNight.safetensors","",model_dir_colab)
 def fn_btn_get_model_8():
-    return exec_cmd(model_dir_colab,"curl -Lo \"Cetus-Mix-V2.safetensors\" https://civitai.com/api/download/models/8298")
+    return exec_cmd(model_dir_colab,"curl -Lo \"chilled_re-generic_v3.safetensors\" https://civitai.com/api/download/models/22033")
 def fn_btn_get_model_9():
-    return exec_cmd(model_dir_colab,"curl -Lo \"Cetus-Mix-V3.safetensors\" https://civitai.com/api/download/models/18496")
+    return exec_cmd(model_dir_colab,"curl -Lo \"fantasticmix_real_v2.0.safetensors\" https://civitai.com/api/download/models/30145")
+def fn_btn_get_model_10():
+    exec_cmd(lora_dir_colab,"curl -Lo \"ruru.Certainty(Civitai-21109).safetensors\" https://civitai.com/api/download/models/25124")
+    exec_cmd(lora_dir_colab,"curl -Lo \"上倉エク_Style(Civitai-17305).safetensors\" https://civitai.com/api/download/models/29525")
+    exec_cmd(hypernetworks_dir_colab,"curl -Lo \"京田画风(Civitai-5356).pt\" https://civitai.com/api/download/models/6225")
+    exec_cmd(lora_dir_colab,"curl -Lo \"剧毒少女画风(Civitai-23623).safetensors\" https://civitai.com/api/download/models/28217")
+    exec_cmd(lora_dir_colab,"curl -Lo \"玉之けだま_style(Civitai-26224).safetensors\" https://civitai.com/api/download/models/31398")
+    return "done."
+def fn_btn_get_model_11():
+    return download_model("sp8999/test_VAE","","mse840000_klf8anime.vae.pt","",VAE_dir_colab)
+def fn_btn_get_model_12():
+    return download_model("luizC/blueberry","","blueberrymix_10.safetensors","",model_dir_colab)
+
 
 def fn_btn_ls_model_dir():
     return exec_cmd(model_dir_colab,"ls")
@@ -137,8 +152,11 @@ def on_ui_tabs():
                     btn_get_model_6 = gr.Button("animevae")
                 with gr.Row().style(equal_height=True):
                     btn_get_model_7 = gr.Button("ChilloutNight")
-                    btn_get_model_8 = gr.Button("CetusMixV2")
-                    btn_get_model_9 = gr.Button("CetusMixV3")
+                    btn_get_model_8 = gr.Button("chilled_re-generic_v3")
+                    btn_get_model_9 = gr.Button("fantasticmix_real_v2.0")
+                    btn_get_model_10 = gr.Button("画风lora集")
+                    btn_get_model_11 = gr.Button("mse840000_klf8anime")
+                    btn_get_model_12 = gr.Button("BlueberryMix")
         btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
 
         radio.change(fn=fn_radio_set_model_path, inputs=radio, outputs=text_target_dir)
@@ -152,6 +170,9 @@ def on_ui_tabs():
         btn_get_model_7.click(fn_btn_get_model_7, inputs=[], outputs=out_file)
         btn_get_model_8.click(fn_btn_get_model_8, inputs=[], outputs=out_file)
         btn_get_model_9.click(fn_btn_get_model_9, inputs=[], outputs=out_file)
+        btn_get_model_10.click(fn_btn_get_model_10, inputs=[], outputs=out_file)
+        btn_get_model_11.click(fn_btn_get_model_11, inputs=[], outputs=out_file)
+        btn_get_model_12.click(fn_btn_get_model_12, inputs=[], outputs=out_file)
 
         gr.Markdown(
         """
