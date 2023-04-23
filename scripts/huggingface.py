@@ -6,6 +6,25 @@ from huggingface_hub import model_info, hf_hub_download, upload_file
 from huggingface_hub.utils import RepositoryNotFoundError, RevisionNotFoundError
 from modules import scripts, script_callbacks 
 
+# "/content/stable-diffusion-webui/"
+base_dir = "/content/SD_reserved/"
+
+model_dir_colab=base_dir+"models/Stable-diffusion/"
+lora_dir_colab=base_dir+"models/Lora/"
+hypernetworks_dir_colab=base_dir+"models/hypernetworks/"
+VAE_dir_colab=base_dir+"models/VAE/"
+
+def update_path():
+    global model_dir_colab
+    global lora_dir_colab
+    global hypernetworks_dir_colab
+    global VAE_dir_colab
+    model_dir_colab = base_dir+"models/Stable-diffusion/"
+    lora_dir_colab = base_dir+"models/Lora/"
+    hypernetworks_dir_colab = base_dir+"models/hypernetworks/"
+    VAE_dir_colab = base_dir+"models/VAE/"
+
+
 def download_model(_repo_id,_folder,_filename,_token,_cache_dir):
     try:
         repo_exists = True
@@ -54,7 +73,7 @@ def download_file(_file_path):
 
 def fn_btn_get_repo_info(_user,_repo_id,_token):
     repo_id_name=_repo_id.replace("/","_")
-    repo_folder="/content/stable-diffusion-webui/repo_info/"+str(repo_id_name)
+    repo_folder=base_dir+"repo_info/"+str(repo_id_name)
     if _token == "" or _user == "":
         git_command="GIT_LFS_SKIP_SMUDGE=1 git clone https://huggingface.co/"+str(_repo_id)
     else:
@@ -66,11 +85,6 @@ def fn_btn_get_repo_info(_user,_repo_id,_token):
         exec_cmd(repo_folder,"git pull")
     return exec_cmd(repo_folder,"tree")
 
-model_dir_colab="/content/stable-diffusion-webui/models/Stable-diffusion/"
-lora_dir_colab="/content/stable-diffusion-webui/models/Lora/"
-hypernetworks_dir_colab="/content/stable-diffusion-webui/models/hypernetworks/"
-VAE_dir_colab="/content/stable-diffusion-webui/models/VAE/"
-
 def fn_radio_set_model_path(choice):
     if choice == "model":
         return gr.Textbox.update(visible=True,value=model_dir_colab)
@@ -80,6 +94,19 @@ def fn_radio_set_model_path(choice):
         return gr.Textbox.update(visible=True,value=hypernetworks_dir_colab)
     elif choice == "VAE":
         return gr.Textbox.update(visible=True,value=VAE_dir_colab)
+    
+
+def fn_radio_set_base_dir(choice):
+    global base_dir
+    if choice == "SD_reserved":
+        base_dir = "/content/SD_reserved/"
+        update_path()
+        return gr.Textbox.update(visible=True, value=base_dir)
+    elif choice == "stable-diffusion-webui":
+        base_dir = "/content/stable-diffusion-webui/"
+        update_path()
+        return gr.Textbox.update(visible=True, value=base_dir)
+
 
 def fn_btn_get_model_1():
     return download_model("swl-models/mix-pro-v3","","mix-pro-v3.safetensors","",model_dir_colab)
@@ -100,11 +127,9 @@ def fn_btn_get_model_8():
 def fn_btn_get_model_9():
     return exec_cmd(model_dir_colab,"curl -Lo \"fantasticmix_real_v2.0.safetensors\" https://civitai.com/api/download/models/30145")
 def fn_btn_get_model_10():
-    exec_cmd(lora_dir_colab,"curl -Lo \"ruru.Certainty(Civitai-21109).safetensors\" https://civitai.com/api/download/models/25124")
     exec_cmd(lora_dir_colab,"curl -Lo \"上倉エク_Style(Civitai-17305).safetensors\" https://civitai.com/api/download/models/29525")
     exec_cmd(hypernetworks_dir_colab,"curl -Lo \"京田画风(Civitai-5356).pt\" https://civitai.com/api/download/models/6225")
     exec_cmd(lora_dir_colab,"curl -Lo \"剧毒少女画风(Civitai-23623).safetensors\" https://civitai.com/api/download/models/28217")
-    exec_cmd(lora_dir_colab,"curl -Lo \"玉之けだま_style(Civitai-26224).safetensors\" https://civitai.com/api/download/models/31398")
     return "done."
 def fn_btn_get_model_11():
     return download_model("sp8999/test_VAE","","mse840000_klf8anime.vae.pt","",VAE_dir_colab)
@@ -115,9 +140,9 @@ def fn_btn_get_model_12():
 def fn_btn_ls_model_dir():
     return exec_cmd(model_dir_colab,"ls")
 def fn_btn_update_cache():
-    return exec_cmd("","cp -f /content/stable-diffusion-webui/cache.json /content/drive/MyDrive/novelai_script/NovelAI_WEBUI/cache.json")
+    return exec_cmd("","cp -f "+base_dir+"cache.json /content/drive/MyDrive/novelai_script/NovelAI_WEBUI/cache.json")
 def fn_btn_cat_kaggle_log():
-    return exec_cmd("","cat /content/stable-diffusion-webui/out.log")
+    return exec_cmd("", "cat "+base_dir+"out.log")
 def fn_btn_ls_kaggle_working():
     return exec_cmd("/kaggle/working/","ls")
 
@@ -136,9 +161,14 @@ def on_ui_tabs():
                     text_filename = gr.Textbox(show_label=False,value="", max_lines=1, placeholder="filename")
                     text_token = gr.Textbox(show_label=False,type="password", max_lines=1, placeholder="🤗token")
                 with gr.Row().style(equal_height=True):
-                    radio = gr.Radio(["model", "lora", "hypernetworks","VAE"], label="model_type")
+                    radio_base_dir = gr.Radio(
+                        ["SD_reserved", "stable-diffusion-webui"], label="base_dir")
+                    text_base_dir = gr.Textbox(
+                        value=base_dir, max_lines=1, placeholder="base_dir", label="base_dir")
                 with gr.Row().style(equal_height=True):
-                    text_target_dir = gr.Textbox(show_label=False,value="/content/stable-diffusion-webui/models/Lora/", max_lines=1, placeholder="target_dir")
+                    radio_model_type = gr.Radio(["model", "lora", "hypernetworks","VAE"], label="model_type")
+                    text_target_dir = gr.Textbox(
+                        value=lora_dir_colab, max_lines=1, placeholder="target_dir", label="model_dir")
                 with gr.Row().style(equal_height=True):
                     btn_download = gr.Button("download")
                 with gr.Row().style(equal_height=True):
@@ -159,7 +189,8 @@ def on_ui_tabs():
                     btn_get_model_12 = gr.Button("BlueberryMix")
         btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
 
-        radio.change(fn=fn_radio_set_model_path, inputs=radio, outputs=text_target_dir)
+        radio_model_type.change(fn=fn_radio_set_model_path, inputs=radio_model_type, outputs=text_target_dir)
+        radio_base_dir.change(fn=fn_radio_set_base_dir,inputs=radio_base_dir, outputs=text_base_dir)
     
         btn_get_model_1.click(fn_btn_get_model_1, inputs=[], outputs=out_file)
         btn_get_model_2.click(fn_btn_get_model_2, inputs=[], outputs=out_file)
