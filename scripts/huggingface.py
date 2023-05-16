@@ -111,7 +111,7 @@ def fn_radio_set_base_dir(choice):
 def fn_btn_get_model_1():
     return download_model("swl-models/mix-pro-v3","","mix-pro-v3.safetensors","",model_dir_colab)
 def fn_btn_get_model_2():
-    return download_model("AgraFL/RefSlave-V2","","RefSlave-V2.safetensors","",model_dir_colab)
+    return download_model("andite/pastel-mix", "", "pastelmix.safetensors", "", model_dir_colab)
 def fn_btn_get_model_3():
     return download_model("gsdf/Counterfeit-V2.5","","Counterfeit-V2.5.safetensors","",model_dir_colab)
 def fn_btn_get_model_4():
@@ -127,14 +127,21 @@ def fn_btn_get_model_8():
 def fn_btn_get_model_9():
     return exec_cmd(model_dir_colab,"curl -Lo \"fantasticmix_real_v2.0.safetensors\" https://civitai.com/api/download/models/30145")
 def fn_btn_get_model_10():
-    exec_cmd(lora_dir_colab,"curl -Lo \"上倉エク_Style(Civitai-17305).safetensors\" https://civitai.com/api/download/models/29525")
-    exec_cmd(hypernetworks_dir_colab,"curl -Lo \"京田画风(Civitai-5356).pt\" https://civitai.com/api/download/models/6225")
-    exec_cmd(lora_dir_colab,"curl -Lo \"剧毒少女画风(Civitai-23623).safetensors\" https://civitai.com/api/download/models/28217")
+    exec_cmd(lora_dir_colab, "curl -Lo \"上倉エク_Style(Civitai-17305).safetensors\" https://civitai.com/api/download/models/29525")
+    exec_cmd(hypernetworks_dir_colab, "curl -Lo \"京田画风(Civitai-5356).pt\" https://civitai.com/api/download/models/6225")
+    exec_cmd(lora_dir_colab, "curl -Lo \"剧毒少女画风(Civitai-23623).safetensors\" https://civitai.com/api/download/models/28217")
+    exec_cmd(lora_dir_colab, "curl -Lo \"鬼猫_Style(Civitai-63326).safetensors\" https://civitai.com/api/download/models/67870")
+    download_model("SmallTotem/reserved_public", "", "かにビーム_kani_biimu-10000.pt", "", hypernetworks_dir_colab)
     return "done."
 def fn_btn_get_model_11():
     return download_model("sp8999/test_VAE","","mse840000_klf8anime.vae.pt","",VAE_dir_colab)
 def fn_btn_get_model_12():
-    return download_model("luizC/blueberry","","blueberrymix_10.safetensors","",model_dir_colab)
+    exec_cmd(lora_dir_colab, "curl -Lo \"korukoruno_style(Civitai-55938).safetensors\" https://civitai.com/api/download/models/60333")
+    exec_cmd(lora_dir_colab, "curl -Lo \"Oshioshio_style(Civitai-44894).safetensors\" https://civitai.com/api/download/models/49514")
+    exec_cmd(lora_dir_colab, "curl -Lo \"Toosaka_Asagi_Style(Civitai-63962).safetensors\" https://civitai.com/api/download/models/68556")
+    exec_cmd(lora_dir_colab, "curl -Lo \"TrNyteal_Style(Civitai-63153).safetensors\" https://civitai.com/api/download/models/67684")
+    exec_cmd(lora_dir_colab, "curl -Lo \"dropkun_style(Civitai-59214).safetensors\" https://civitai.com/api/download/models/63662")
+    return "done."
 
 
 def fn_btn_ls_model_dir():
@@ -175,7 +182,7 @@ def on_ui_tabs():
                     out_file = gr.Textbox(show_label=False)
                 with gr.Row().style(equal_height=True):
                     btn_get_model_1 = gr.Button("mix-pro-v3")
-                    btn_get_model_2 = gr.Button("RefSlave-V2")
+                    btn_get_model_2 = gr.Button("pastelmixNoVAE")
                     btn_get_model_3 = gr.Button("Counterfeit-V2.5")
                     btn_get_model_4 = gr.Button("9527")
                     btn_get_model_5 = gr.Button("chilloutmix-Ni")
@@ -184,9 +191,9 @@ def on_ui_tabs():
                     btn_get_model_7 = gr.Button("ChilloutNight")
                     btn_get_model_8 = gr.Button("chilled_re-generic_v3")
                     btn_get_model_9 = gr.Button("fantasticmix_real_v2.0")
-                    btn_get_model_10 = gr.Button("画风lora集")
+                    btn_get_model_10 = gr.Button("画风lora集#1")
                     btn_get_model_11 = gr.Button("mse840000_klf8anime")
-                    btn_get_model_12 = gr.Button("BlueberryMix")
+                    btn_get_model_12 = gr.Button("画风lora集#2")
         btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
 
         radio_model_type.change(fn=fn_radio_set_model_path, inputs=radio_model_type, outputs=text_target_dir)
