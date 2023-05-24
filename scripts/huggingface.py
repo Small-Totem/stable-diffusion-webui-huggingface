@@ -127,7 +127,7 @@ def fn_btn_get_model_8():
 def fn_btn_get_model_9():
     return exec_cmd(model_dir_colab,"curl -Lo \"fantasticmix_real_v2.0.safetensors\" https://civitai.com/api/download/models/30145")
 def fn_btn_get_model_10():
-    exec_cmd(lora_dir_colab, "curl -Lo \"上倉エク_Style(Civitai-17305).safetensors\" https://civitai.com/api/download/models/29525")
+    exec_cmd(lora_dir_colab, "curl -Lo \"上倉エク_Style(Civitai-17305).safetensors\" https://civitai.com/api/download/models/30030")
     exec_cmd(hypernetworks_dir_colab, "curl -Lo \"京田画风(Civitai-5356).pt\" https://civitai.com/api/download/models/6225")
     exec_cmd(lora_dir_colab, "curl -Lo \"剧毒少女画风(Civitai-23623).safetensors\" https://civitai.com/api/download/models/28217")
     exec_cmd(lora_dir_colab, "curl -Lo \"鬼猫_Style(Civitai-63326).safetensors\" https://civitai.com/api/download/models/67870")
