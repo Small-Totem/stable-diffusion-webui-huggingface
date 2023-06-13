@@ -125,7 +125,12 @@ def fn_btn_get_model_7():
 def fn_btn_get_model_8():
     return exec_cmd(model_dir_colab,"curl -Lo \"chilled_re-generic_v3.safetensors\" https://civitai.com/api/download/models/22033")
 def fn_btn_get_model_9():
-    return exec_cmd(model_dir_colab,"curl -Lo \"fantasticmix_real_v2.0.safetensors\" https://civitai.com/api/download/models/30145")
+    exec_cmd(lora_dir_colab, "curl -Lo \"Azhiichigo_Style(Civitai-78206).safetensors\" https://civitai.com/api/download/models/82989")
+    exec_cmd(lora_dir_colab, "curl -Lo \"sakurapion_Style(Civitai-87420).safetensors\" https://civitai.com/api/download/models/93027")
+    exec_cmd(lora_dir_colab, "curl -Lo \"優子鈴_style(Civitai-70330).safetensors\" https://civitai.com/api/download/models/74989")
+    exec_cmd(lora_dir_colab, "curl -Lo \"鬼针草_style(Civitai-67080).safetensors\" https://civitai.com/api/download/models/71705")
+    exec_cmd(lora_dir_colab, "curl -Lo \"治愈系插画(Civitai-86596).safetensors\" https://civitai.com/api/download/models/92103")
+    return "done."
 def fn_btn_get_model_10():
     exec_cmd(lora_dir_colab, "curl -Lo \"上倉エク_Style(Civitai-17305).safetensors\" https://civitai.com/api/download/models/30030")
     exec_cmd(hypernetworks_dir_colab, "curl -Lo \"京田画风(Civitai-5356).pt\" https://civitai.com/api/download/models/6225")
@@ -134,7 +139,9 @@ def fn_btn_get_model_10():
     download_model("SmallTotem/reserved_public", "", "かにビーム_kani_biimu-10000.pt", "", hypernetworks_dir_colab)
     return "done."
 def fn_btn_get_model_11():
-    return download_model("sp8999/test_VAE","","mse840000_klf8anime.vae.pt","",VAE_dir_colab)
+    download_model("sp8999/test_VAE", "", "mse840000_klf8anime.vae.pt", "", VAE_dir_colab)
+    download_model("Norisuke193/kl-f8-anime2", "", "kl-f8-anime2.vae.pt", "", VAE_dir_colab)
+    return "done."
 def fn_btn_get_model_12():
     exec_cmd(lora_dir_colab, "curl -Lo \"korukoruno_style(Civitai-55938).safetensors\" https://civitai.com/api/download/models/60333")
     exec_cmd(lora_dir_colab, "curl -Lo \"Oshioshio_style(Civitai-44894).safetensors\" https://civitai.com/api/download/models/49514")
@@ -190,9 +197,9 @@ def on_ui_tabs():
                 with gr.Row().style(equal_height=True):
                     btn_get_model_7 = gr.Button("ChilloutNight")
                     btn_get_model_8 = gr.Button("chilled_re-generic_v3")
-                    btn_get_model_9 = gr.Button("fantasticmix_real_v2.0")
+                    btn_get_model_9 = gr.Button("画风lora集#3")
                     btn_get_model_10 = gr.Button("画风lora集#1")
-                    btn_get_model_11 = gr.Button("mse840000_klf8anime")
+                    btn_get_model_11 = gr.Button("klf8animeVAE")
                     btn_get_model_12 = gr.Button("画风lora集#2")
         btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
 
