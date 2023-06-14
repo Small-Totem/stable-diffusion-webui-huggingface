@@ -57,7 +57,8 @@ def exec_cmd(_dir,_command):
     output = process.stdout.read().decode(encoding="utf-8")
     error = process.stderr.read().decode(encoding="utf-8")
     result = {"output": output, "error": error}
-    print("exec_cmd:"+str(result))
+    print("exec_cmd: "+_command)
+    print("-> out: "+str(result))
     if output == '':
         if error  == '':
             return "(no output)"
@@ -237,7 +238,8 @@ def on_ui_tabs():
         gr.Markdown(
         """
         ### command
-        download_file: curl -Lo "*filename*"  *url*
+        download_file: curl -Lo "*filename*"  *url*  
+        download_from_civitai: curl -Lo "(Civitai-).safetensors"
         """)
         with gr.Group():
             with gr.Box():
