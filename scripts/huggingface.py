@@ -128,8 +128,7 @@ def fn_btn_get_model_8():
 def fn_btn_get_model_9():
     exec_cmd(lora_dir_colab, "curl -Lo \"Azhiichigo_Style(Civitai-78206).safetensors\" https://civitai.com/api/download/models/82989")
     exec_cmd(lora_dir_colab, "curl -Lo \"sakurapion_Style(Civitai-87420).safetensors\" https://civitai.com/api/download/models/93027")
-    exec_cmd(lora_dir_colab, "curl -Lo \"優子鈴_style(Civitai-70330).safetensors\" https://civitai.com/api/download/models/74989")
-    exec_cmd(lora_dir_colab, "curl -Lo \"鬼针草_style(Civitai-67080).safetensors\" https://civitai.com/api/download/models/71705")
+    exec_cmd(lora_dir_colab, "curl -Lo \"AutoSoftener(Civitai-89780).safetensors\" https://civitai.com/api/download/models/95589")
     exec_cmd(lora_dir_colab, "curl -Lo \"治愈系插画(Civitai-86596).safetensors\" https://civitai.com/api/download/models/92103")
     return "done."
 def fn_btn_get_model_10():
@@ -137,7 +136,6 @@ def fn_btn_get_model_10():
     exec_cmd(hypernetworks_dir_colab, "curl -Lo \"京田画风(Civitai-5356).pt\" https://civitai.com/api/download/models/6225")
     exec_cmd(lora_dir_colab, "curl -Lo \"剧毒少女画风(Civitai-23623).safetensors\" https://civitai.com/api/download/models/28217")
     exec_cmd(lora_dir_colab, "curl -Lo \"鬼猫_Style(Civitai-63326).safetensors\" https://civitai.com/api/download/models/67870")
-    download_model("SmallTotem/reserved_public", "", "かにビーム_kani_biimu-10000.pt", "", hypernetworks_dir_colab)
     return "done."
 def fn_btn_get_model_11():
     download_model("sp8999/test_VAE", "", "mse840000_klf8anime.vae.pt", "", VAE_dir_colab)
