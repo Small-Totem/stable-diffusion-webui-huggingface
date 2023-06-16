@@ -130,6 +130,7 @@ def fn_btn_get_model_9():
     exec_cmd(lora_dir_colab, "curl -Lo \"sakurapion_Style(Civitai-87420).safetensors\" https://civitai.com/api/download/models/93027")
     exec_cmd(lora_dir_colab, "curl -Lo \"AutoSoftener(Civitai-89780).safetensors\" https://civitai.com/api/download/models/95589")
     exec_cmd(lora_dir_colab, "curl -Lo \"治愈系插画(Civitai-86596).safetensors\" https://civitai.com/api/download/models/92103")
+    download_model("JamesFlare/pastel-mix", "", "pastelmix-lora.safetensors", "", lora_dir_colab)
     return "done."
 def fn_btn_get_model_10():
     exec_cmd(lora_dir_colab, "curl -Lo \"上倉エク_Style(Civitai-17305).safetensors\" https://civitai.com/api/download/models/30030")
