@@ -128,8 +128,9 @@ def fn_btn_get_model_8():
 def fn_btn_get_model_9():
     exec_cmd(lora_dir_colab, "curl -Lo \"Azhiichigo_Style(Civitai-78206).safetensors\" https://civitai.com/api/download/models/82989")
     exec_cmd(lora_dir_colab, "curl -Lo \"sakurapion_Style(Civitai-87420).safetensors\" https://civitai.com/api/download/models/93027")
-    exec_cmd(lora_dir_colab, "curl -Lo \"AutoSoftener(Civitai-89780).safetensors\" https://civitai.com/api/download/models/95589")
     exec_cmd(lora_dir_colab, "curl -Lo \"治愈系插画(Civitai-86596).safetensors\" https://civitai.com/api/download/models/92103")
+    exec_cmd(lora_dir_colab, "curl -Lo \"国风插画(Civitai-84527).safetensors\" https://civitai.com/api/download/models/93169")
+    exec_cmd(lora_dir_colab, "curl -Lo \"发光星星(Civitai-84532).safetensors\" https://civitai.com/api/download/models/89869")
     download_model("JamesFlare/pastel-mix", "", "pastelmix-lora.safetensors", "", lora_dir_colab)
     return "done."
 def fn_btn_get_model_10():
@@ -144,7 +145,6 @@ def fn_btn_get_model_11():
     return "done."
 def fn_btn_get_model_12():
     exec_cmd(lora_dir_colab, "curl -Lo \"korukoruno_style(Civitai-55938).safetensors\" https://civitai.com/api/download/models/60333")
-    exec_cmd(lora_dir_colab, "curl -Lo \"Oshioshio_style(Civitai-44894).safetensors\" https://civitai.com/api/download/models/49514")
     exec_cmd(lora_dir_colab, "curl -Lo \"Toosaka_Asagi_Style(Civitai-63962).safetensors\" https://civitai.com/api/download/models/68556")
     exec_cmd(lora_dir_colab, "curl -Lo \"TrNyteal_Style(Civitai-63153).safetensors\" https://civitai.com/api/download/models/67684")
     exec_cmd(lora_dir_colab, "curl -Lo \"dropkun_style(Civitai-59214).safetensors\" https://civitai.com/api/download/models/63662")
