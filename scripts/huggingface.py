@@ -1,5 +1,4 @@
 import os
-import numpy as np
 import gradio as gr
 import subprocess
 from huggingface_hub import model_info, hf_hub_download, upload_file
@@ -96,7 +95,6 @@ def fn_radio_set_model_path(choice):
     elif choice == "VAE":
         return gr.Textbox.update(visible=True,value=VAE_dir_colab)
     
-
 def fn_radio_set_base_dir(choice):
     global base_dir
     if choice == "SD_reserved":
@@ -131,23 +129,25 @@ def fn_btn_get_model_9():
     exec_cmd(lora_dir_colab, "curl -Lo \"治愈系插画(Civitai-86596).safetensors\" https://civitai.com/api/download/models/92103")
     exec_cmd(lora_dir_colab, "curl -Lo \"国风插画(Civitai-84527).safetensors\" https://civitai.com/api/download/models/93169")
     exec_cmd(lora_dir_colab, "curl -Lo \"发光星星(Civitai-84532).safetensors\" https://civitai.com/api/download/models/89869")
-    download_model("JamesFlare/pastel-mix", "", "pastelmix-lora.safetensors", "", lora_dir_colab)
     return "done."
 def fn_btn_get_model_10():
     exec_cmd(lora_dir_colab, "curl -Lo \"上倉エク_Style(Civitai-17305).safetensors\" https://civitai.com/api/download/models/30030")
     exec_cmd(hypernetworks_dir_colab, "curl -Lo \"京田画风(Civitai-5356).pt\" https://civitai.com/api/download/models/6225")
     exec_cmd(lora_dir_colab, "curl -Lo \"剧毒少女画风(Civitai-23623).safetensors\" https://civitai.com/api/download/models/28217")
     exec_cmd(lora_dir_colab, "curl -Lo \"鬼猫_Style(Civitai-63326).safetensors\" https://civitai.com/api/download/models/67870")
+    exec_cmd(lora_dir_colab, "curl -Lo \"korukoruno_style(Civitai-55938).safetensors\" https://civitai.com/api/download/models/60333")
+    exec_cmd(lora_dir_colab, "curl -Lo \"dropkun_style(Civitai-59214).safetensors\" https://civitai.com/api/download/models/63662")
     return "done."
 def fn_btn_get_model_11():
     download_model("sp8999/test_VAE", "", "mse840000_klf8anime.vae.pt", "", VAE_dir_colab)
     download_model("Norisuke193/kl-f8-anime2", "", "kl-f8-anime2.vae.pt", "", VAE_dir_colab)
     return "done."
 def fn_btn_get_model_12():
-    exec_cmd(lora_dir_colab, "curl -Lo \"korukoruno_style(Civitai-55938).safetensors\" https://civitai.com/api/download/models/60333")
-    exec_cmd(lora_dir_colab, "curl -Lo \"Toosaka_Asagi_Style(Civitai-63962).safetensors\" https://civitai.com/api/download/models/68556")
-    exec_cmd(lora_dir_colab, "curl -Lo \"TrNyteal_Style(Civitai-63153).safetensors\" https://civitai.com/api/download/models/67684")
-    exec_cmd(lora_dir_colab, "curl -Lo \"dropkun_style(Civitai-59214).safetensors\" https://civitai.com/api/download/models/63662")
+    exec_cmd(lora_dir_colab, "curl -Lo \"優子鈴_style(Civitai-92285).safetensors\" https://civitai.com/api/download/models/98384")
+    exec_cmd(lora_dir_colab, "curl -Lo \"サブロー_style_v2(Civitai-101075)\" https://civitai.com/api/download/models/108207")
+    exec_cmd(lora_dir_colab, "curl -Lo \"MISSILE228_style(Civitai-60298).safetensors\" https://civitai.com/api/download/models/64771")
+    exec_cmd(lora_dir_colab, "curl -Lo \"Bison倉鼠_style(Civitai-45010).safetensors\" https://civitai.com/api/download/models/61440")
+    exec_cmd(lora_dir_colab, "curl -Lo \"rurudo_style_v2(Civitai-60868).safetensors\" https://civitai.com/api/download/models/96876")
     return "done."
 
 
@@ -175,12 +175,11 @@ def on_ui_tabs():
                     text_filename = gr.Textbox(show_label=False,value="", max_lines=1, placeholder="filename")
                     text_token = gr.Textbox(show_label=False,type="password", max_lines=1, placeholder="🤗token")
                 with gr.Row().style(equal_height=True):
-                    radio_base_dir = gr.Radio(
-                        ["SD_reserved", "stable-diffusion-webui"], label="base_dir")
+                    radio_base_dir = gr.Radio(["SD_reserved", "stable-diffusion-webui"], label="base_dir")
                     text_base_dir = gr.Textbox(
                         value=base_dir, max_lines=1, placeholder="base_dir", label="base_dir")
                 with gr.Row().style(equal_height=True):
-                    radio_model_type = gr.Radio(["model", "lora", "hypernetworks","VAE"], label="model_type")
+                    radio_model_type_1 = gr.Radio(["model", "lora", "hypernetworks","VAE"], label="model_type")
                     text_target_dir = gr.Textbox(
                         value=lora_dir_colab, max_lines=1, placeholder="target_dir", label="model_dir")
                 with gr.Row().style(equal_height=True):
@@ -203,7 +202,7 @@ def on_ui_tabs():
                     btn_get_model_12 = gr.Button("画风lora集#2")
         btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
 
-        radio_model_type.change(fn=fn_radio_set_model_path, inputs=radio_model_type, outputs=text_target_dir)
+        radio_model_type_1.change(fn=fn_radio_set_model_path, inputs=radio_model_type_1, outputs=text_target_dir)
         radio_base_dir.change(fn=fn_radio_set_base_dir,inputs=radio_base_dir, outputs=text_base_dir)
     
         btn_get_model_1.click(fn_btn_get_model_1, inputs=[], outputs=out_file)
@@ -243,9 +242,10 @@ def on_ui_tabs():
         with gr.Group():
             with gr.Box():
                 with gr.Row().style(equal_height=True):
-                    text_cmd_dir = gr.Textbox(show_label=False,value="/content", max_lines=1, placeholder="context_dir")
+                    radio_model_type_2 = gr.Radio(["model", "lora", "hypernetworks", "VAE"], label="model_type")
+                    text_cmd_dir = gr.Textbox(value=lora_dir_colab, max_lines=1, placeholder="context_dir", label="context_dir")
                 with gr.Row().style(equal_height=True):
-                    text_cmd = gr.Textbox(show_label=False, max_lines=1, placeholder="command")
+                    text_cmd = gr.Textbox(value="curl -Lo \"(Civitai-).safetensors\"", max_lines=1, placeholder="command", label="command")
                 with gr.Row().style(equal_height=True):
                     btn_exec = gr.Button("execute")
                 with gr.Row().style(equal_height=True):
@@ -256,6 +256,8 @@ def on_ui_tabs():
                     btn_cat_kaggle_log = gr.Button("cat_kaggle_log")
                     btn_ls_kaggle_working = gr.Button("ls_kaggle_working")
         btn_exec.click(exec_cmd,inputs=[text_cmd_dir,text_cmd],outputs=out_cmd)
+
+        radio_model_type_2.change(fn=fn_radio_set_model_path, inputs=radio_model_type_2, outputs=text_cmd_dir)
 
         btn_ls_model_dir.click(fn_btn_ls_model_dir,inputs=[],outputs=out_cmd)
         btn_update_cache.click(fn_btn_update_cache,inputs=[],outputs=out_cmd)
