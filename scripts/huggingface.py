@@ -1,12 +1,18 @@
 import os
+import datetime
 import gradio as gr
 import subprocess
 from huggingface_hub import model_info, hf_hub_download, upload_file
 from huggingface_hub.utils import RepositoryNotFoundError, RevisionNotFoundError
 from modules import scripts, script_callbacks 
 
-# "/content/stable-diffusion-webui/"
-base_dir = "/content/SD_reserved/"
+#auto select base dir
+base_dir=""
+print(os.getcwd())
+if "stable-diffusion-webui" in os.getcwd():
+    base_dir = "/content/stable-diffusion-webui/"
+else:
+    base_dir = "/content/SD_reserved/"
 
 model_dir_colab=base_dir+"models/Stable-diffusion/"
 lora_dir_colab=base_dir+"models/Lora/"
@@ -46,9 +52,16 @@ def download_model(_repo_id,_folder,_filename,_token,_cache_dir):
     return info_ret
 
 def exec_cmd(_dir,_command):
+    #command_log
+    with open("./extensions/stable-diffusion-webui-huggingface/command_log.txt", "a") as f:
+        f.write("["+datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")+"] "+_command+"\n")
+
     if _dir == "":
         _command_final=_command
     else: 
+        if not os.path.exists(_dir):
+            print("warning: dir created. ("+_dir+")")
+            os.makedirs(_dir)
         _command_final="cd "+_dir+"&&"+_command
     process = subprocess.Popen(_command_final, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     process.wait()
@@ -95,16 +108,17 @@ def fn_radio_set_model_path(choice):
     elif choice == "VAE":
         return gr.Textbox.update(visible=True,value=VAE_dir_colab)
     
-def fn_radio_set_base_dir(choice):
+def set_base_dir(choice):
     global base_dir
     if choice == "SD_reserved":
         base_dir = "/content/SD_reserved/"
-        update_path()
-        return gr.Textbox.update(visible=True, value=base_dir)
     elif choice == "stable-diffusion-webui":
         base_dir = "/content/stable-diffusion-webui/"
-        update_path()
-        return gr.Textbox.update(visible=True, value=base_dir)
+    update_path()
+    
+def fn_radio_set_base_dir(choice):
+    set_base_dir(choice)
+    return gr.Textbox.update(visible=True, value=base_dir)
 
 
 def fn_btn_get_model_1():
@@ -152,16 +166,15 @@ def fn_btn_get_model_12():
 
 
 def fn_btn_ls_model_dir():
-    return exec_cmd(model_dir_colab,"ls")
-def fn_btn_update_cache():
-    return exec_cmd("","cp -f "+base_dir+"cache.json /content/drive/MyDrive/novelai_script/NovelAI_WEBUI/cache.json")
+    return exec_cmd(model_dir_colab, "ls")
+def fn_btn_ls_lora_dir():
+    return exec_cmd(lora_dir_colab, "ls")
 def fn_btn_cat_kaggle_log():
     return exec_cmd("", "cat "+base_dir+"out.log")
-def fn_btn_ls_kaggle_working():
-    return exec_cmd("/kaggle/working/","ls")
+def fn_btn_update_cache():
+    return exec_cmd("", "cp -f "+base_dir+"cache.json /content/drive/MyDrive/novelai_script/NovelAI_WEBUI/cache.json")
 
-
-def on_ui_tabs():     
+def on_ui_tabs():
     with gr.Blocks() as huggingface:
         gr.Markdown(
         """
@@ -252,17 +265,18 @@ def on_ui_tabs():
                     out_cmd = gr.Textbox(show_label=False)
                 with gr.Row().style(equal_height=True):
                     btn_ls_model_dir = gr.Button("ls_model_dir")
-                    btn_update_cache = gr.Button("update_cache")
+                    btn_ls_lora_dir = gr.Button("ls_lora_dir")
                     btn_cat_kaggle_log = gr.Button("cat_kaggle_log")
-                    btn_ls_kaggle_working = gr.Button("ls_kaggle_working")
+                    btn_update_cache = gr.Button("update_cache")
         btn_exec.click(exec_cmd,inputs=[text_cmd_dir,text_cmd],outputs=out_cmd)
 
         radio_model_type_2.change(fn=fn_radio_set_model_path, inputs=radio_model_type_2, outputs=text_cmd_dir)
 
         btn_ls_model_dir.click(fn_btn_ls_model_dir,inputs=[],outputs=out_cmd)
-        btn_update_cache.click(fn_btn_update_cache,inputs=[],outputs=out_cmd)
+        btn_ls_lora_dir.click(fn_btn_ls_lora_dir, inputs=[], outputs=out_cmd)
         btn_cat_kaggle_log.click(fn_btn_cat_kaggle_log,inputs=[],outputs=out_cmd)
-        btn_ls_kaggle_working.click(fn_btn_ls_kaggle_working,inputs=[],outputs=out_cmd)
+        btn_update_cache.click(fn_btn_update_cache,inputs=[],outputs=out_cmd)
+
 
         gr.Markdown(
         """
@@ -293,4 +307,5 @@ def on_ui_tabs():
                     file_download_file = gr.File()
         btn_check_file.click(download_file, inputs=[text_download_file_path], outputs=file_download_file)
     return (huggingface, "Hugging Face", "huggingface"),
+
 script_callbacks.on_ui_tabs(on_ui_tabs)
