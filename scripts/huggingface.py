@@ -169,8 +169,8 @@ def fn_btn_ls_model_dir():
     return exec_cmd(model_dir_colab, "ls")
 def fn_btn_ls_lora_dir():
     return exec_cmd(lora_dir_colab, "ls")
-def fn_btn_cat_kaggle_log():
-    return exec_cmd("", "cat "+base_dir+"out.log")
+def fn_btn_cat_cmd_log():
+    return exec_cmd("", "cat "+base_dir+"extensions/stable-diffusion-webui-huggingface/command_log.txt")
 def fn_btn_update_cache():
     return exec_cmd("", "cp -f "+base_dir+"cache.json /content/drive/MyDrive/novelai_script/NovelAI_WEBUI/cache.json")
 
@@ -258,23 +258,27 @@ def on_ui_tabs():
                     radio_model_type_2 = gr.Radio(["model", "lora", "hypernetworks", "VAE"], label="model_type")
                     text_cmd_dir = gr.Textbox(value=lora_dir_colab, max_lines=1, placeholder="context_dir", label="context_dir")
                 with gr.Row().style(equal_height=True):
-                    text_cmd = gr.Textbox(value="curl -Lo \"(Civitai-).safetensors\"", max_lines=1, placeholder="command", label="command")
+                    text_cmd_1 = gr.Textbox(value="curl -Lo \"(Civitai-).safetensors\"", max_lines=1, placeholder="command", label="command")
+                    text_cmd_2 = gr.Textbox(value="", max_lines=1, placeholder="command", label="command")
                 with gr.Row().style(equal_height=True):
-                    btn_exec = gr.Button("execute")
+                    btn_exec_1 = gr.Button("execute")
+                    btn_exec_2 = gr.Button("execute")
                 with gr.Row().style(equal_height=True):
                     out_cmd = gr.Textbox(show_label=False)
                 with gr.Row().style(equal_height=True):
                     btn_ls_model_dir = gr.Button("ls_model_dir")
                     btn_ls_lora_dir = gr.Button("ls_lora_dir")
-                    btn_cat_kaggle_log = gr.Button("cat_kaggle_log")
+                    btn_cat_cmd_log = gr.Button("cat_cmd_log")
                     btn_update_cache = gr.Button("update_cache")
-        btn_exec.click(exec_cmd,inputs=[text_cmd_dir,text_cmd],outputs=out_cmd)
+        btn_exec_1.click(exec_cmd, inputs=[text_cmd_dir, text_cmd_1], outputs=out_cmd)
+        btn_exec_2.click(exec_cmd, inputs=[text_cmd_dir, text_cmd_2], outputs=out_cmd)
 
         radio_model_type_2.change(fn=fn_radio_set_model_path, inputs=radio_model_type_2, outputs=text_cmd_dir)
 
         btn_ls_model_dir.click(fn_btn_ls_model_dir,inputs=[],outputs=out_cmd)
         btn_ls_lora_dir.click(fn_btn_ls_lora_dir, inputs=[], outputs=out_cmd)
-        btn_cat_kaggle_log.click(fn_btn_cat_kaggle_log,inputs=[],outputs=out_cmd)
+        btn_cat_cmd_log.click(fn_btn_cat_cmd_log,
+                              inputs=[], outputs=out_cmd)
         btn_update_cache.click(fn_btn_update_cache,inputs=[],outputs=out_cmd)
 
 
