@@ -153,8 +153,7 @@ def fn_btn_get_model_10():
     exec_cmd(lora_dir_colab, "curl -Lo \"dropkun_style(Civitai-59214).safetensors\" https://civitai.com/api/download/models/63662")
     return "done."
 def fn_btn_get_model_11():
-    download_model("sp8999/test_VAE", "", "mse840000_klf8anime.vae.pt", "", VAE_dir_colab)
-    download_model("Norisuke193/kl-f8-anime2", "", "kl-f8-anime2.vae.pt", "", VAE_dir_colab)
+    exec_cmd(VAE_dir_colab, "curl -Lo \"ClearVAE_v2.3.safetensors\" https://civitai.com/api/download/models/88156?type=Model&format=Other")
     return "done."
 def fn_btn_get_model_12():
     exec_cmd(lora_dir_colab, "curl -Lo \"優子鈴_style(Civitai-92285).safetensors\" https://civitai.com/api/download/models/98384")
@@ -166,11 +165,13 @@ def fn_btn_get_model_12():
 
 
 def fn_btn_ls_model_dir():
-    return exec_cmd(model_dir_colab, "ls")
+    return exec_cmd(model_dir_colab, "ls -lh")
 def fn_btn_ls_lora_dir():
-    return exec_cmd(lora_dir_colab, "ls")
+    return exec_cmd(lora_dir_colab, "ls -lh")
 def fn_btn_cat_cmd_log():
     return exec_cmd("", "cat "+base_dir+"extensions/stable-diffusion-webui-huggingface/command_log.txt")
+def fn_btn_cat_kaggle_log():
+    return exec_cmd(base_dir, "cat out.log")
 def fn_btn_update_cache():
     return exec_cmd("", "cp -f "+base_dir+"cache.json /content/drive/MyDrive/novelai_script/NovelAI_WEBUI/cache.json")
 
@@ -182,36 +183,36 @@ def on_ui_tabs():
         """)
         with gr.Group():
             with gr.Box():
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
                     text_repo_id = gr.Textbox(show_label=False,value="SmallTotem/reserved", max_lines=1, placeholder="repo_id")
-                    text_folder = gr.Textbox(show_label=False,value="Lora-real", max_lines=1, placeholder="folder")
+                    text_folder = gr.Textbox(show_label=False,value="", max_lines=1, placeholder="folder")
                     text_filename = gr.Textbox(show_label=False,value="", max_lines=1, placeholder="filename")
                     text_token = gr.Textbox(show_label=False,type="password", max_lines=1, placeholder="🤗token")
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
                     radio_base_dir = gr.Radio(["SD_reserved", "stable-diffusion-webui"], label="base_dir")
                     text_base_dir = gr.Textbox(
                         value=base_dir, max_lines=1, placeholder="base_dir", label="base_dir")
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
                     radio_model_type_1 = gr.Radio(["model", "lora", "hypernetworks","VAE"], label="model_type")
                     text_target_dir = gr.Textbox(
                         value=lora_dir_colab, max_lines=1, placeholder="target_dir", label="model_dir")
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
                     btn_download = gr.Button("download")
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
                     out_file = gr.Textbox(show_label=False)
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
                     btn_get_model_1 = gr.Button("mix-pro-v3")
                     btn_get_model_2 = gr.Button("pastelmixNoVAE")
                     btn_get_model_3 = gr.Button("Counterfeit-V2.5")
                     btn_get_model_4 = gr.Button("9527")
                     btn_get_model_5 = gr.Button("chilloutmix-Ni")
                     btn_get_model_6 = gr.Button("animevae")
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
                     btn_get_model_7 = gr.Button("ChilloutNight")
                     btn_get_model_8 = gr.Button("chilled_re-generic_v3")
                     btn_get_model_9 = gr.Button("画风lora集#3")
                     btn_get_model_10 = gr.Button("画风lora集#1")
-                    btn_get_model_11 = gr.Button("klf8animeVAE")
+                    btn_get_model_11 = gr.Button("clearVAE_v2.3")
                     btn_get_model_12 = gr.Button("画风lora集#2")
         btn_download.click(download_model, inputs=[text_repo_id, text_folder, text_filename, text_token,text_target_dir], outputs=out_file)
 
@@ -237,12 +238,12 @@ def on_ui_tabs():
         """)
         with gr.Group():
             with gr.Box():
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
                     text_repo_info_user = gr.Textbox(show_label=False,value="SmallTotem", max_lines=1, placeholder="user")
                     text_repo_info_repo_id = gr.Textbox(show_label=False,value="SmallTotem/reserved", max_lines=1, placeholder="repo_id")
                     text_repo_info_token = gr.Textbox(show_label=False,type="password", max_lines=1, placeholder="🤗token")
                     btn_get_repo_info = gr.Button("get_info")
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
                     out_repo_info = gr.Textbox(show_label=False)
         btn_get_repo_info.click(fn_btn_get_repo_info, inputs=[text_repo_info_user,text_repo_info_repo_id,text_repo_info_token], outputs=out_repo_info)
 
@@ -254,32 +255,33 @@ def on_ui_tabs():
         """)
         with gr.Group():
             with gr.Box():
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
                     radio_model_type_2 = gr.Radio(["model", "lora", "hypernetworks", "VAE"], label="model_type")
                     text_cmd_dir = gr.Textbox(value=lora_dir_colab, max_lines=1, placeholder="context_dir", label="context_dir")
-                with gr.Row().style(equal_height=True):
-                    text_cmd_1 = gr.Textbox(value="curl -Lo \"(Civitai-).safetensors\"", max_lines=1, placeholder="command", label="command")
-                    text_cmd_2 = gr.Textbox(value="", max_lines=1, placeholder="command", label="command")
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
+                    text_cmd_1 = gr.Textbox(value="curl -Lo \"(Civitai-).safetensors\"", max_lines=1, placeholder="command", label="command_1")
+                    text_cmd_2 = gr.Textbox(value="ls -lh", max_lines=1, placeholder="command", label="command_2")
+                with gr.Row(equal_height=True):
                     btn_exec_1 = gr.Button("execute")
                     btn_exec_2 = gr.Button("execute")
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
                     out_cmd = gr.Textbox(show_label=False)
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
                     btn_ls_model_dir = gr.Button("ls_model_dir")
                     btn_ls_lora_dir = gr.Button("ls_lora_dir")
                     btn_cat_cmd_log = gr.Button("cat_cmd_log")
+                    btn_cat_kaggle_log = gr.Button("cat_kaggle_log")
                     btn_update_cache = gr.Button("update_cache")
         btn_exec_1.click(exec_cmd, inputs=[text_cmd_dir, text_cmd_1], outputs=out_cmd)
         btn_exec_2.click(exec_cmd, inputs=[text_cmd_dir, text_cmd_2], outputs=out_cmd)
 
         radio_model_type_2.change(fn=fn_radio_set_model_path, inputs=radio_model_type_2, outputs=text_cmd_dir)
 
-        btn_ls_model_dir.click(fn_btn_ls_model_dir,inputs=[],outputs=out_cmd)
+        btn_ls_model_dir.click(fn_btn_ls_model_dir, inputs=[],outputs=out_cmd)
         btn_ls_lora_dir.click(fn_btn_ls_lora_dir, inputs=[], outputs=out_cmd)
-        btn_cat_cmd_log.click(fn_btn_cat_cmd_log,
-                              inputs=[], outputs=out_cmd)
-        btn_update_cache.click(fn_btn_update_cache,inputs=[],outputs=out_cmd)
+        btn_cat_cmd_log.click(fn_btn_cat_cmd_log, inputs=[], outputs=out_cmd)
+        btn_cat_kaggle_log.click(fn_btn_cat_kaggle_log, inputs=[], outputs=out_cmd)
+        btn_update_cache.click(fn_btn_update_cache, inputs=[],outputs=out_cmd)
 
 
         gr.Markdown(
@@ -288,13 +290,13 @@ def on_ui_tabs():
         """)
         with gr.Group():
             with gr.Box():
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
                     text_file = gr.Textbox(show_label=False, max_lines=1, placeholder="file")
                     text_repo_id_2 = gr.Textbox(show_label=False, max_lines=1,value="SmallTotem/reserved", placeholder="repo_id")
                     text_path_in_repo = gr.Textbox(show_label=False, max_lines=1, placeholder="path_in_repo")
                     text_token_2 = gr.Textbox(show_label=False,type="password", max_lines=1, placeholder="🤗token")
                     out_file_push = gr.Textbox(show_label=False)
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
                     btn_push_file = gr.Button("push")
         btn_push_file.click(push_file, inputs=[text_file, text_path_in_repo, text_repo_id_2, text_token_2], outputs=out_file_push)
 
@@ -304,10 +306,10 @@ def on_ui_tabs():
         """)
         with gr.Group():
             with gr.Box():
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
                     text_download_file_path = gr.Textbox(show_label=False, max_lines=1, placeholder="download_file_path")
                     btn_check_file = gr.Button("check")
-                with gr.Row().style(equal_height=True):
+                with gr.Row(equal_height=True):
                     file_download_file = gr.File()
         btn_check_file.click(download_file, inputs=[text_download_file_path], outputs=file_download_file)
     return (huggingface, "Hugging Face", "huggingface"),
