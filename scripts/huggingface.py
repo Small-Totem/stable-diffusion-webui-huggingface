@@ -18,6 +18,9 @@ model_dir_colab=base_dir+"models/Stable-diffusion/"
 lora_dir_colab=base_dir+"models/Lora/"
 hypernetworks_dir_colab=base_dir+"models/hypernetworks/"
 VAE_dir_colab=base_dir+"models/VAE/"
+out_dir_kaggle="/content/drive/MyDrive/novelai"
+
+flag_kaggle_save_confirm=False
 
 def update_path():
     global model_dir_colab
@@ -172,6 +175,14 @@ def fn_btn_cat_cmd_log():
     return exec_cmd("", "cat "+base_dir+"extensions/stable-diffusion-webui-huggingface/command_log.txt")
 def fn_btn_cat_kaggle_log():
     return exec_cmd(base_dir, "cat out.log")
+def fn_btn_kaggle_save():
+    if flag_kaggle_save_confirm:
+        flag_kaggle_save_confirm = False
+        return exec_cmd(out_dir_kaggle, "tar -czf /kaggle/working/out.tar.gz --exclude=*-checkpoint.png *.png")
+    else:
+        flag_kaggle_save_confirm = True
+        return "click again to confirm."
+
 def fn_btn_update_cache():
     return exec_cmd("", "cp -f "+base_dir+"cache.json /content/drive/MyDrive/novelai_script/NovelAI_WEBUI/cache.json")
 
@@ -271,6 +282,7 @@ def on_ui_tabs():
                     btn_ls_lora_dir = gr.Button("ls_lora_dir")
                     btn_cat_cmd_log = gr.Button("cat_cmd_log")
                     btn_cat_kaggle_log = gr.Button("cat_kaggle_log")
+                    btn_kaggle_save = gr.Button("kaggle_save")
                     btn_update_cache = gr.Button("update_cache")
         btn_exec_1.click(exec_cmd, inputs=[text_cmd_dir, text_cmd_1], outputs=out_cmd)
         btn_exec_2.click(exec_cmd, inputs=[text_cmd_dir, text_cmd_2], outputs=out_cmd)
@@ -281,6 +293,7 @@ def on_ui_tabs():
         btn_ls_lora_dir.click(fn_btn_ls_lora_dir, inputs=[], outputs=out_cmd)
         btn_cat_cmd_log.click(fn_btn_cat_cmd_log, inputs=[], outputs=out_cmd)
         btn_cat_kaggle_log.click(fn_btn_cat_kaggle_log, inputs=[], outputs=out_cmd)
+        btn_kaggle_save.click(fn_btn_kaggle_save, inputs=[], outputs=out_cmd)
         btn_update_cache.click(fn_btn_update_cache, inputs=[],outputs=out_cmd)
 
 
