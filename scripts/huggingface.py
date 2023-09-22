@@ -176,6 +176,7 @@ def fn_btn_cat_cmd_log():
 def fn_btn_cat_kaggle_log():
     return exec_cmd(base_dir, "cat out.log")
 def fn_btn_kaggle_save():
+    global flag_kaggle_save_confirm
     if flag_kaggle_save_confirm:
         flag_kaggle_save_confirm = False
         return exec_cmd(out_dir_kaggle, "tar -czf /kaggle/working/out.tar.gz --exclude=*-checkpoint.png *.png")
