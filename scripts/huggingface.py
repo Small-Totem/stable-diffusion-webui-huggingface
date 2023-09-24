@@ -183,9 +183,8 @@ def fn_btn_kaggle_save():
     else:
         flag_kaggle_save_confirm = True
         return "click again to confirm."
-
-def fn_btn_update_cache():
-    return exec_cmd("", "cp -f "+base_dir+"cache.json /content/drive/MyDrive/novelai_script/NovelAI_WEBUI/cache.json")
+def fn_btn_cat_output_dir():
+    return exec_cmd(out_dir_kaggle, "ls -lh")
 
 def on_ui_tabs():
     with gr.Blocks() as huggingface:
@@ -284,7 +283,7 @@ def on_ui_tabs():
                     btn_cat_cmd_log = gr.Button("cat_cmd_log")
                     btn_cat_kaggle_log = gr.Button("cat_kaggle_log")
                     btn_kaggle_save = gr.Button("kaggle_save")
-                    btn_update_cache = gr.Button("update_cache")
+                    btn_cat_output_dir = gr.Button("cat_output_dir")
         btn_exec_1.click(exec_cmd, inputs=[text_cmd_dir, text_cmd_1], outputs=out_cmd)
         btn_exec_2.click(exec_cmd, inputs=[text_cmd_dir, text_cmd_2], outputs=out_cmd)
 
@@ -295,7 +294,7 @@ def on_ui_tabs():
         btn_cat_cmd_log.click(fn_btn_cat_cmd_log, inputs=[], outputs=out_cmd)
         btn_cat_kaggle_log.click(fn_btn_cat_kaggle_log, inputs=[], outputs=out_cmd)
         btn_kaggle_save.click(fn_btn_kaggle_save, inputs=[], outputs=out_cmd)
-        btn_update_cache.click(fn_btn_update_cache, inputs=[],outputs=out_cmd)
+        btn_cat_output_dir.click(fn_btn_cat_output_dir, inputs=[],outputs=out_cmd)
 
 
         gr.Markdown(
