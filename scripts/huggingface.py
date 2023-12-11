@@ -174,7 +174,7 @@ def fn_btn_ls_lora_dir():
 def fn_btn_cat_cmd_log():
     return exec_cmd("", "cat "+base_dir+"extensions/stable-diffusion-webui-huggingface/command_log.txt")
 def fn_btn_cat_kaggle_log():
-    return exec_cmd(base_dir, "cat out.log")
+    return exec_cmd("/kaggle/working", "cat out.log")
 def fn_btn_kaggle_save():
     global flag_kaggle_save_confirm
     if flag_kaggle_save_confirm:
